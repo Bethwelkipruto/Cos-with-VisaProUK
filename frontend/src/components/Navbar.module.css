@@ -1,0 +1,172 @@
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 72px;
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  z-index: 201;
+}
+
+.flag {
+  width: 32px;
+  height: 22px;
+  border-radius: 3px;
+  background: #012169;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Desktop nav links */
+.links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.links a { transition: color 0.2s; }
+.links a:hover, .links .active { color: var(--gold2); }
+
+.desktopCta {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.desktopCta:hover { background: var(--gold2); }
+
+/* Hamburger button */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 201;
+}
+
+.burgerLine {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.burgerTop  { transform: translateY(7px) rotate(45deg); }
+.burgerMid  { opacity: 0; }
+.burgerBot  { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile CTA inside drawer */
+.mobileCtaItem { display: none; }
+
+.cta {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+.cta:hover { background: var(--gold2); }
+
+/* Overlay behind mobile menu */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 198;
+}
+
+/* ── Tablet (768px – 1024px) ── */
+@media (max-width: 1024px) {
+  .links { gap: 20px; }
+  .desktopCta { padding: 9px 16px; font-size: 0.82rem; }
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+  .burger { display: flex; }
+  .desktopCta { display: none; }
+  .mobileCtaItem { display: block; }
+
+  .links {
+    position: fixed;
+    top: 0; right: 0;
+    width: min(300px, 80vw);
+    height: 100dvh;
+    background: var(--navy2);
+    border-left: 1px solid var(--border);
+    flex-direction: column;
+    gap: 0;
+    padding: 88px 0 32px;
+    z-index: 199;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .linksOpen { transform: translateX(0); }
+
+  .links li a,
+  .links li span {
+    display: block;
+    padding: 16px 28px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .links li a:hover { background: rgba(255, 255, 255, 0.04); color: var(--gold2); }
+  .links .active { color: var(--gold2); }
+
+  .mobileCtaItem {
+    padding: 20px 28px 0;
+  }
+}
+
+/* ── Small mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  .nav { padding: 0 4%; }
+  .logo { font-size: 1.15rem; }
+}
+
+/* ── Wide screens (≥ 1440px) ── */
+@media (min-width: 1440px) {
+  .nav { padding: 0 8%; }
+  .links { gap: 40px; font-size: 0.92rem; }
+}
