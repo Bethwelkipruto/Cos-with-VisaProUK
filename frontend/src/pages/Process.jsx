@@ -7,7 +7,7 @@ export default function Process() {
       <div className={styles.layout}>
         <div>
           <div className="section-label">The Process</div>
-          <h2 className="section-title">From Offer Letter to UK Entry</h2>
+          <h2 className="section-title">Struggling with Certificate of Sponsorship and UK Visa Application?</h2>
           <p className="section-sub">A clear, predictable process with dedicated case managers at every stage.</p>
           <div className={styles.steps}>
             {processSteps.map(({ num, title, desc }) => (
