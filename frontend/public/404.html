@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <title>BritPath</title>
     <script>
-      // GitHub Pages SPA fix — redirects 404s back to index.html
-      // preserving the path so React Router can handle it
-      var path = window.location.pathname.replace('/Cos-with-VisaProUK', '') || '/';
-      var search = window.location.search;
-      var hash = window.location.hash;
-      window.location.replace(
-        '/Cos-with-VisaProUK/?redirect=' + encodeURIComponent(path + search + hash)
+      // GitHub Pages SPA fix
+      // Stores the full path in sessionStorage then redirects to the root
+      // index.html picks it up and passes it to React Router
+      var l = window.location;
+      sessionStorage.setItem(
+        'spa_redirect',
+        l.pathname.slice('/Cos-with-VisaProUK'.length) + l.search + l.hash
       );
+      l.replace('/Cos-with-VisaProUK/');
     </script>
   </head>
   <body></body>

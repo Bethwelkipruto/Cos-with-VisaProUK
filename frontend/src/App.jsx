@@ -12,7 +12,7 @@ import Contact from './pages/Contact'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Cos-with-VisaProUK">
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />

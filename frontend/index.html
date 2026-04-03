@@ -11,16 +11,18 @@
     />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
     <script>
-      // GitHub Pages SPA redirect handler — restores the path after 404.html redirect
+      // GitHub Pages SPA redirect handler
+      // Reads the path saved by 404.html and restores it before React boots
       (function () {
-        var redirect = new URLSearchParams(window.location.search).get('redirect');
+        var redirect = sessionStorage.getItem('spa_redirect');
         if (redirect) {
-          window.history.replaceState(null, '', redirect);
+          sessionStorage.removeItem('spa_redirect');
+          window.history.replaceState(null, '', '/Cos-with-VisaProUK' + redirect);
         }
       })();
     </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
