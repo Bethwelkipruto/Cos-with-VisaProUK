@@ -1,0 +1,90 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0a1628;
+  --navy2: #0f2040;
+  --royal: #1a3a6b;
+  --gold: #c8922a;
+  --gold2: #e8b84b;
+  --cream: #f7f3ec;
+  --white: #ffffff;
+  --muted: #8a9ab5;
+  --border: rgba(200, 146, 42, 0.25);
+
+  /* Fluid section padding */
+  --section-px: clamp(4%, 6vw, 10%);
+  --section-py: clamp(60px, 8vw, 120px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+a { text-decoration: none; color: inherit; }
+
+img, video { max-width: 100%; display: block; }
+
+.section-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  max-width: 620px;
+}
+
+.section-sub {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 540px;
+  line-height: 1.7;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 14px 28px;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(200, 146, 42, 0.35);
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+
+.btn-outline {
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: var(--white);
+  padding: 14px 28px;
+  border-radius: 7px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, background 0.2s;
+  display: inline-block;
+}
+.btn-outline:hover { border-color: var(--gold2); background: rgba(200, 146, 42, 0.08); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .btn-primary, .btn-outline { width: 100%; text-align: center; padding: 14px 20px; }
+}
