@@ -26,7 +26,7 @@ export default function Navbar() {
   return (
     <nav className={styles.nav}>
       <Link to="/" className={styles.logo}>
-        <span className={styles.flag}>🇬🇧</span> BritPath
+        <span className={styles.flag}>🇬🇧</span> CoS with VisaProUK
       </Link>
 
       <ul className={`${styles.links} ${open ? styles.linksOpen : ''}`}>
