@@ -179,8 +179,8 @@ export const processSteps = [
 
 export const timeline = [
   { tag: 'Day 1', title: 'Onboarding & Assessment', desc: 'Case manager assigned, documents collected' },
-  { tag: 'Day 2–5', title: 'Compliance Checks', desc: 'Salary, SOC code, and HR records verified' },
-  { tag: 'Day 5–8', title: 'CoS Assigned via SMS', desc: 'Reference number issued to sponsored worker' },
-  { tag: 'Day 8–12', title: 'Visa Application Submitted', desc: 'UKVCAS biometrics appointment booked' },
-  { tag: 'Day 12–25', title: 'Decision Received ✓', desc: 'Typically 3 weeks with priority service' },
+  { tag: 'Day 2', title: 'Compliance Checks', desc: 'Salary, SOC code, and HR records verified' },
+  { tag: 'Day 3', title: 'CoS Assigned via SMS', desc: 'Reference number issued to sponsored worker' },
+  { tag: 'Day 4', title: 'Visa Application Submitted', desc: 'UKVCAS biometrics appointment booked' },
+  { tag: 'Day 5–6', title: 'Decision Received', desc: 'Typically 3 weeks with priority service' },
 ]
