@@ -36,7 +36,7 @@ export default function Process() {
             </div>
           ))}
           <div className={styles.priorityNote}>
-            ⚡ <strong>Priority Processing Available</strong> — 5-day super-priority visa decisions for an additional UKVI fee.
+            ⚡ <strong>Priority Processing Available</strong> — 3-days super-priority visa decisions for an additional UKVI fee.
           </div>
         </div>
       </div>
