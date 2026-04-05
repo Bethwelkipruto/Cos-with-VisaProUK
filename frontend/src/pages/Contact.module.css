@@ -1,4 +1,4 @@
-/* ── Hero ── */
+/* ── Hero CTA ── */
 .hero {
   position: relative;
   background: linear-gradient(135deg, var(--royal), var(--navy));
@@ -25,7 +25,8 @@
   font-weight: 900;
   line-height: 1.1;
   color: var(--white);
-  margin: 12px 0 20px;
+  margin-bottom: 20px;
+  margin-top: 12px;
 }
 
 .heroInner p {
@@ -56,7 +57,7 @@
 .btnGold:hover { background: var(--gold2); transform: translateY(-2px); }
 
 .btnWhatsApp {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   background: #25d366;
@@ -83,11 +84,13 @@
   align-items: start;
 }
 
+.col {}
+
 .colTitle {
   font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 800;
   color: var(--white);
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   line-height: 1.2;
 }
 
@@ -95,22 +98,26 @@
 .departments {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .deptCard {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 20px;
+  padding: 20px 22px;
   transition: border-color 0.2s, transform 0.2s;
 }
-.deptCard:hover { border-color: var(--border); transform: translateX(4px); }
+
+.deptCard:hover {
+  border-color: var(--border);
+  transform: translateX(4px);
+}
 
 .deptIcon {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   flex-shrink: 0;
   width: 44px;
   height: 44px;
@@ -150,14 +157,15 @@
 }
 .emailLink:hover { color: var(--white); }
 
-/* ── Info Cards ── */
+/* ── Right column info cards ── */
 .infoCard {
   background: var(--navy2);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: clamp(20px, 3vw, 28px);
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
+
 .infoCard:last-child { margin-bottom: 0; }
 
 .infoCardHeader {
@@ -168,7 +176,7 @@
 }
 
 .infoIcon {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   width: 40px;
   height: 40px;
   background: rgba(200, 146, 42, 0.12);
@@ -180,7 +188,7 @@
 }
 
 .infoCard h3 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--white);
 }
@@ -189,9 +197,10 @@
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
+/* WhatsApp button */
 .whatsappBtn {
   display: inline-flex;
   align-items: center;
@@ -206,12 +215,12 @@
 }
 .whatsappBtn:hover { background: #1ebe5d; }
 
-/* Office Hours */
+/* Office hours */
 .hoursTable {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .hoursRow {
@@ -220,10 +229,11 @@
   align-items: center;
   font-size: 0.87rem;
   color: rgba(255, 255, 255, 0.75);
-  padding: 10px 0;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
-.hoursRow:last-child { border-bottom: none; }
+
+.hoursRow:last-child { border-bottom: none; padding-bottom: 0; }
 
 .hoursTime {
   font-weight: 700;
@@ -236,9 +246,9 @@
 }
 
 .timezone {
-  font-size: 0.76rem;
-  color: rgba(255, 255, 255, 0.35);
-  margin-top: 6px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
 }
 
 /* Address */
@@ -246,10 +256,14 @@
   font-style: normal;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.75);
-  line-height: 1.9;
-  margin-bottom: 14px;
+  line-height: 1.8;
+  margin-bottom: 16px;
 }
-.address strong { color: var(--white); font-weight: 700; }
+
+.address strong {
+  color: var(--white);
+  font-weight: 700;
+}
 
 .mapLink {
   font-size: 0.85rem;
@@ -268,5 +282,5 @@
 @media (max-width: 480px) {
   .heroBtns { flex-direction: column; }
   .btnGold, .btnWhatsApp { text-align: center; justify-content: center; }
-  .deptCard { flex-direction: column; gap: 10px; }
+  .deptCard { flex-direction: column; gap: 12px; }
 }

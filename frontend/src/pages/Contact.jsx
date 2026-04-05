@@ -24,7 +24,7 @@ const departments = [
     icon: '🛟',
     title: 'Support / Help',
     emails: ['support@visaglobal.co.uk'],
-    desc: 'Case updates, technical issues and urgent assistance.',
+    desc: 'Technical issues, case updates and urgent assistance.',
   },
 ]
 
@@ -42,27 +42,25 @@ export default function Contact() {
             visa documentation and onboarding guidance — from first enquiry to UK arrival.
           </p>
           <div className={styles.heroBtns}>
-            <Link to="/eligibility" className={styles.btnGold}>
-              Check My Eligibility — Free
-            </Link>
+            <Link to="/eligibility" className={styles.btnGold}>Check My Eligibility — Free</Link>
             <a
-              href="https://wa.me/44112480515"
+              href="https://wa.me/447000000000"
               target="_blank"
               rel="noreferrer"
               className={styles.btnWhatsApp}
             >
-              💬 Chat on WhatsApp
+              <span>💬</span> Chat on WhatsApp
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── Contact Info ── */}
+      {/* ── Contact Info Grid ── */}
       <section className={styles.infoSection}>
         <div className={styles.grid}>
 
-          {/* Left — Department emails */}
-          <div>
+          {/* Department emails */}
+          <div className={styles.col}>
             <div className="section-label">Contact Departments</div>
             <h2 className={styles.colTitle}>Reach the Right Team</h2>
             <div className={styles.departments}>
@@ -85,8 +83,8 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right — WhatsApp, Hours, Address */}
-          <div>
+          {/* Right column — WhatsApp + Hours + Address */}
+          <div className={styles.col}>
 
             {/* WhatsApp */}
             <div className={styles.infoCard}>
@@ -94,14 +92,14 @@ export default function Contact() {
                 <span className={styles.infoIcon}>💬</span>
                 <h3>WhatsApp Support</h3>
               </div>
-              <p>Message our support team directly on WhatsApp for quick responses on your case.</p>
+              <p>Prefer to message? Reach our support team directly on WhatsApp for quick responses on your case.</p>
               <a
-                href="https://wa.me/44112480515"
+                href="https://wa.me/447000000000"
                 target="_blank"
                 rel="noreferrer"
                 className={styles.whatsappBtn}
               >
-                💬 +44 112 480 515
+                💬 Message Us on WhatsApp
               </a>
             </div>
 
@@ -124,7 +122,7 @@ export default function Contact() {
               <div className={styles.timezone}>🇬🇧 All times are UK time (GMT / BST)</div>
             </div>
 
-            {/* Address */}
+            {/* Office Address */}
             <div className={styles.infoCard}>
               <div className={styles.infoCardHeader}>
                 <span className={styles.infoIcon}>📍</span>
