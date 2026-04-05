@@ -4,7 +4,7 @@ import styles from './Home.module.css'
 const stats = [
   { num: '4,800+', label: 'CoS Assigned' },
   { num: '98.3%', label: 'Approval Rate' },
-  { num: '12 Days', label: 'Avg Processing' },
+  { num: '3-6 Days', label: 'Avg Processing' },
   { num: '60+', label: 'Sponsor Employers' },
 ]
 
