@@ -6,20 +6,20 @@
 .layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 80px);
+  gap: clamp(36px, 6vw, 80px);
   align-items: start;
 }
 
 .steps {
-  margin-top: 40px;
+  margin-top: 36px;
   display: flex;
   flex-direction: column;
 }
 
 .step {
   display: flex;
-  gap: 20px;
-  padding: 24px 0;
+  gap: 18px;
+  padding: 22px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
@@ -27,8 +27,8 @@
 
 .stepNum {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: rgba(200, 146, 42, 0.12);
   border: 1.5px solid var(--border);
@@ -36,19 +36,19 @@
   align-items: center;
   justify-content: center;
   font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--gold2);
 }
 
 .step h4 {
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 1.5vw, 1rem);
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .step p {
-  font-size: 0.85rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.86rem);
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
 }
@@ -57,7 +57,7 @@
   background: linear-gradient(135deg, var(--navy2), var(--royal));
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: clamp(24px, 3vw, 40px);
+  padding: clamp(20px, 3vw, 40px);
   position: relative;
   overflow: hidden;
 }
@@ -66,22 +66,23 @@
   content: '';
   position: absolute;
   bottom: -40px; right: -40px;
-  width: 200px; height: 200px;
+  width: 180px; height: 180px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(200, 146, 42, 0.18), transparent 70%);
+  pointer-events: none;
 }
 
 .visual h3 {
-  font-size: 1.2rem;
-  margin-bottom: 28px;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  margin-bottom: 24px;
   color: var(--gold2);
 }
 
 .tlItem {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 14px;
+  margin-bottom: 22px;
   position: relative;
   z-index: 1;
 }
@@ -106,48 +107,53 @@
 }
 
 .tlTag {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--gold2);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
-.tlItem h4 { font-size: 0.95rem; font-weight: 600; }
+.tlItem h4 {
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  font-weight: 600;
+}
 
 .tlItem p {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.55);
-  margin-top: 3px;
+  margin-top: 2px;
+  line-height: 1.5;
 }
 
 .priorityNote {
-  margin-top: 28px;
+  margin-top: 24px;
   padding: 14px 16px;
   background: rgba(200, 146, 42, 0.1);
   border-radius: 8px;
   border: 1px solid var(--border);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.7);
   position: relative;
   z-index: 1;
+  line-height: 1.6;
 }
 
 .priorityNote strong { color: var(--gold2); }
 
 /* ── Tablet ── */
 @media (max-width: 1024px) {
-  .layout { gap: 48px; }
+  .layout { gap: 40px; }
 }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
-  .visual { margin-top: 8px; }
+  .visual { margin-top: 0; }
 }
 
 /* ── Wide ── */
 @media (min-width: 1440px) {
-  .layout { grid-template-columns: 1fr 1fr; gap: 100px; }
+  .layout { gap: 100px; }
 }
