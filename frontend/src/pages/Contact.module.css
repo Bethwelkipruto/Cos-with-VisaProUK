@@ -1,72 +1,286 @@
-.section {
-  background: linear-gradient(135deg, var(--royal), var(--gold));
-  padding: var(--section-py) var(--section-px);
-  text-align: center;
+/* ── Hero CTA ── */
+.hero {
   position: relative;
+  background: linear-gradient(135deg, var(--royal), var(--navy));
+  padding: calc(72px + clamp(48px, 7vw, 100px)) var(--section-px) clamp(60px, 7vw, 100px);
   overflow: hidden;
 }
 
-.section::before {
-  content: '';
+.heroBg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255, 255, 255, 0.08), transparent);
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 50%, rgba(200, 146, 42, 0.15), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(26, 58, 107, 0.5), transparent 60%);
 }
 
-.section h2 {
-  font-size: clamp(1.8rem, 4vw, 3.5rem);
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.heroInner h1 {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.1;
   color: var(--white);
-  position: relative;
-  z-index: 1;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  margin-top: 12px;
 }
 
-.section p {
-  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-  color: rgba(255, 255, 255, 0.85);
-  position: relative;
-  z-index: 1;
-  margin-bottom: 32px;
-  max-width: 520px;
-  margin-left: auto;
-  margin-right: auto;
+.heroInner p {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.75;
+  max-width: 580px;
+  margin-bottom: 36px;
 }
 
-.btns {
+.heroBtns {
   display: flex;
   gap: 14px;
-  justify-content: center;
   flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
 }
 
-.btnWhite {
-  background: var(--white);
+.btnGold {
+  background: var(--gold);
   color: var(--navy);
-  padding: 14px 32px;
+  padding: 14px 28px;
   border-radius: 7px;
   font-weight: 700;
   font-size: 0.95rem;
-  transition: opacity 0.2s;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(200, 146, 42, 0.35);
   white-space: nowrap;
 }
-.btnWhite:hover { opacity: 0.9; }
+.btnGold:hover { background: var(--gold2); transform: translateY(-2px); }
 
-.btnOutline {
-  border: 2px solid rgba(255, 255, 255, 0.7);
+.btnWhatsApp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
   color: var(--white);
-  padding: 14px 32px;
+  padding: 14px 28px;
   border-radius: 7px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
 }
-.btnOutline:hover { background: rgba(255, 255, 255, 0.1); }
+.btnWhatsApp:hover { background: #1ebe5d; transform: translateY(-2px); }
+
+/* ── Info Section ── */
+.infoSection {
+  background: var(--navy);
+  padding: var(--section-py) var(--section-px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: start;
+}
+
+.col {}
+
+.colTitle {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 32px;
+  line-height: 1.2;
+}
+
+/* ── Department Cards ── */
+.departments {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deptCard {
+  display: flex;
+  gap: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px 22px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.deptCard:hover {
+  border-color: var(--border);
+  transform: translateX(4px);
+}
+
+.deptIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(200, 146, 42, 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deptCard h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.deptCard p {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.emails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.emailLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold2);
+  transition: color 0.2s;
+  word-break: break-all;
+}
+.emailLink:hover { color: var(--white); }
+
+/* ── Right column info cards ── */
+.infoCard {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(20px, 3vw, 28px);
+  margin-bottom: 20px;
+}
+
+.infoCard:last-child { margin-bottom: 0; }
+
+.infoCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.infoIcon {
+  font-size: 1.3rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(200, 146, 42, 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.infoCard h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.infoCard > p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* WhatsApp button */
+.whatsappBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: var(--white);
+  padding: 11px 22px;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: background 0.2s;
+}
+.whatsappBtn:hover { background: #1ebe5d; }
+
+/* Office hours */
+.hoursTable {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.87rem;
+  color: rgba(255, 255, 255, 0.75);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hoursRow:last-child { border-bottom: none; padding-bottom: 0; }
+
+.hoursTime {
+  font-weight: 700;
+  color: var(--gold2);
+}
+
+.hoursClosed {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.timezone {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* Address */
+.address {
+  font-style: normal;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.address strong {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.mapLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold2);
+  transition: color 0.2s;
+}
+.mapLink:hover { color: var(--white); }
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: 1fr; gap: 48px; }
+}
 
 /* ── Mobile ── */
 @media (max-width: 480px) {
-  .btns { flex-direction: column; align-items: stretch; }
-  .btnWhite, .btnOutline { text-align: center; }
+  .heroBtns { flex-direction: column; }
+  .btnGold, .btnWhatsApp { text-align: center; justify-content: center; }
+  .deptCard { flex-direction: column; gap: 12px; }
 }
