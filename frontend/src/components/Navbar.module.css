@@ -5,10 +5,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5%;
-  height: 72px;
-  background: rgba(10, 22, 40, 0.95);
-  backdrop-filter: blur(18px);
+  padding: 0 var(--section-px);
+  height: var(--nav-h);
+  background: rgba(10, 22, 40, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
 }
 
@@ -17,27 +18,28 @@
   align-items: center;
   gap: 10px;
   font-family: 'Playfair Display', serif;
-  font-size: 1.35rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   font-weight: 700;
   z-index: 201;
+  flex-shrink: 0;
 }
 
 .flag {
-  width: 32px;
-  height: 22px;
+  width: 30px;
+  height: 20px;
   border-radius: 3px;
   background: #012169;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
   flex-shrink: 0;
 }
 
-/* Desktop nav links */
+/* ── Desktop links ── */
 .links {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   list-style: none;
   font-size: 0.88rem;
   font-weight: 500;
@@ -49,33 +51,38 @@
 .desktopCta {
   background: var(--gold);
   color: var(--navy);
-  padding: 10px 22px;
+  padding: 10px 20px;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   transition: background 0.2s;
   white-space: nowrap;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 .desktopCta:hover { background: var(--gold2); }
 
-/* Hamburger button */
+/* ── Hamburger ── */
 .burger {
   display: none;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  /* 44×44 minimum touch target */
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 10px;
   z-index: 201;
+  flex-shrink: 0;
 }
 
 .burgerLine {
   display: block;
-  width: 24px;
+  width: 22px;
   height: 2px;
   background: var(--white);
   border-radius: 2px;
@@ -84,7 +91,7 @@
 }
 
 .burgerTop  { transform: translateY(7px) rotate(45deg); }
-.burgerMid  { opacity: 0; }
+.burgerMid  { opacity: 0; transform: scaleX(0); }
 .burgerBot  { transform: translateY(-7px) rotate(-45deg); }
 
 /* Mobile CTA inside drawer */
@@ -93,28 +100,36 @@
 .cta {
   background: var(--gold);
   color: var(--navy);
-  padding: 12px 24px;
+  padding: 13px 24px;
   border-radius: 6px;
   font-weight: 700;
   font-size: 0.95rem;
   transition: background 0.2s;
-  display: inline-block;
+  display: block;
   text-align: center;
+  min-height: 44px;
 }
 .cta:hover { background: var(--gold2); }
 
-/* Overlay behind mobile menu */
+/* ── Overlay ── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 198;
+  /* Smooth fade */
+  animation: fadeIn 0.2s ease;
 }
 
-/* ── Tablet (768px – 1024px) ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
-  .links { gap: 20px; }
-  .desktopCta { padding: 9px 16px; font-size: 0.82rem; }
+  .links { gap: 18px; font-size: 0.84rem; }
+  .desktopCta { padding: 9px 14px; font-size: 0.8rem; }
 }
 
 /* ── Mobile (≤ 768px) ── */
@@ -126,47 +141,49 @@
   .links {
     position: fixed;
     top: 0; right: 0;
-    width: min(300px, 80vw);
+    /* Drawer width: max 300px but never more than 85vw */
+    width: min(300px, 85vw);
     height: 100dvh;
     background: var(--navy2);
     border-left: 1px solid var(--border);
     flex-direction: column;
     gap: 0;
-    padding: 88px 0 32px;
+    /* Account for nav height + safe area */
+    padding: calc(var(--nav-h) + 16px) 0 calc(32px + env(safe-area-inset-bottom));
     z-index: 199;
     transform: translateX(100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .linksOpen { transform: translateX(0); }
 
-  .links li a,
-  .links li span {
-    display: block;
-    padding: 16px 28px;
+  .links li a {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
     font-size: 1rem;
     font-weight: 500;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     transition: background 0.2s, color 0.2s;
+    min-height: 52px;
   }
 
-  .links li a:hover { background: rgba(255, 255, 255, 0.04); color: var(--gold2); }
+  .links li a:hover,
+  .links li a:active { background: rgba(255, 255, 255, 0.04); color: var(--gold2); }
   .links .active { color: var(--gold2); }
 
-  .mobileCtaItem {
-    padding: 20px 28px 0;
-  }
+  .mobileCtaItem { padding: 20px 24px 0; }
 }
 
-/* ── Small mobile (≤ 480px) ── */
-@media (max-width: 480px) {
-  .nav { padding: 0 4%; }
-  .logo { font-size: 1.15rem; }
+/* ── Small mobile (≤ 390px) ── */
+@media (max-width: 390px) {
+  .logo { font-size: 1rem; gap: 8px; }
+  .flag { width: 26px; height: 18px; }
 }
 
-/* ── Wide screens (≥ 1440px) ── */
+/* ── Wide (≥ 1440px) ── */
 @media (min-width: 1440px) {
-  .nav { padding: 0 8%; }
-  .links { gap: 40px; font-size: 0.92rem; }
+  .links { gap: 36px; font-size: 0.9rem; }
 }

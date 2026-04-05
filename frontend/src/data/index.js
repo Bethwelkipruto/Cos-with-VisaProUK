@@ -140,8 +140,8 @@ export const workerDocs = [
 ]
 
 export const fees = [
-  { label: 'CoS Assignment Fee (employer)', amount: '£239' },
-  { label: 'Skilled Worker Visa (3 years)', amount: '£827' },
+  { label: 'CoS Assignment Fee (employer)', amount: '£627' },
+  { label: 'Skilled Worker Visa (3 years)', amount: '£985' },
   { label: 'Skilled Worker Visa (5 years)', amount: '£1,500' },
   { label: 'Immigration Health Surcharge (p.a.)', amount: '£1,035' },
   { label: 'Priority Service (optional)', amount: '£500' },

@@ -5,21 +5,21 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: clamp(32px, 5vw, 64px);
+  grid-template-columns: 1fr 380px;
+  gap: clamp(28px, 5vw, 64px);
   align-items: start;
-  margin-top: clamp(36px, 4vw, 56px);
+  margin-top: clamp(32px, 4vw, 56px);
 }
 
-.category { margin-bottom: 32px; }
+.category { margin-bottom: 28px; }
 
 .category h4 {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--gold);
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
 }
@@ -38,22 +38,24 @@
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 8px;
   padding: 11px 14px;
-  font-size: 0.85rem;
+  font-size: clamp(0.78rem, 1.2vw, 0.85rem);
   transition: border-color 0.2s;
+  min-height: 44px;
 }
 
 .item:hover { border-color: var(--border); }
 
-.name { flex: 1; }
+.name { flex: 1; line-height: 1.4; }
 
 .req {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 50px;
   background: rgba(200, 146, 42, 0.15);
   color: var(--gold2);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .optional {
@@ -65,14 +67,14 @@
   background: var(--navy2);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: clamp(24px, 3vw, 36px);
+  padding: clamp(20px, 3vw, 32px);
   position: sticky;
-  top: 90px;
+  top: calc(var(--nav-h) + 16px);
 }
 
 .sidebar h3 {
-  font-size: 1.2rem;
-  margin-bottom: 18px;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  margin-bottom: 16px;
 }
 
 .table {
@@ -84,33 +86,34 @@
 .table tr:last-child { border-bottom: none; }
 
 .table td {
-  padding: 11px 0;
-  font-size: 0.85rem;
+  padding: 10px 0;
+  font-size: clamp(0.78rem, 1.2vw, 0.85rem);
   vertical-align: top;
+  line-height: 1.4;
 }
 
 .table td:last-child {
   text-align: right;
   color: var(--gold2);
   font-weight: 600;
-  padding-left: 12px;
+  padding-left: 10px;
   white-space: nowrap;
 }
 
 .total td {
   border-top: 2px solid var(--border) !important;
   font-weight: 700;
-  font-size: 0.95rem;
-  padding-top: 14px !important;
+  font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+  padding-top: 12px !important;
 }
 
 .note {
-  margin-top: 18px;
+  margin-top: 16px;
   padding: 12px 14px;
   background: rgba(200, 146, 42, 0.1);
   border-left: 3px solid var(--gold);
   border-radius: 0 6px 6px 0;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
 }

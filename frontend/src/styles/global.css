@@ -11,49 +11,62 @@
   --muted: #8a9ab5;
   --border: rgba(200, 146, 42, 0.25);
 
-  /* Fluid section padding */
-  --section-px: clamp(4%, 6vw, 10%);
-  --section-py: clamp(60px, 8vw, 120px);
+  /* Fluid horizontal padding — 16px on tiny phones → 10% on wide screens */
+  --section-px: clamp(16px, 6vw, 10%);
+  /* Fluid vertical padding */
+  --section-py: clamp(56px, 8vw, 120px);
+  /* Nav height token used everywhere */
+  --nav-h: 64px;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Prevent font size inflation on iOS landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--navy);
   color: var(--white);
   overflow-x: hidden;
+  /* Safe area for notched phones */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 a { text-decoration: none; color: inherit; }
-
 img, video { max-width: 100%; display: block; }
 
+/* ── Shared section utilities ── */
 .section-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  display: block;
 }
 
 .section-title {
-  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-size: clamp(1.5rem, 3.5vw, 2.8rem);
   font-weight: 800;
   line-height: 1.15;
   max-width: 620px;
 }
 
 .section-sub {
-  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  font-size: clamp(0.88rem, 1.5vw, 1rem);
   color: rgba(255, 255, 255, 0.6);
   max-width: 540px;
-  line-height: 1.7;
-  margin-top: 16px;
+  line-height: 1.75;
+  margin-top: 14px;
 }
 
+/* ── Shared buttons ── */
 .btn-primary {
   background: var(--gold);
   color: var(--navy);
@@ -64,6 +77,9 @@ img, video { max-width: 100%; display: block; }
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   box-shadow: 0 4px 24px rgba(200, 146, 42, 0.35);
   display: inline-block;
+  /* Minimum touch target */
+  min-height: 44px;
+  line-height: 1;
 }
 .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
 
@@ -76,15 +92,23 @@ img, video { max-width: 100%; display: block; }
   font-size: 0.95rem;
   transition: border-color 0.2s, background 0.2s;
   display: inline-block;
+  min-height: 44px;
+  line-height: 1;
 }
 .btn-outline:hover { border-color: var(--gold2); background: rgba(200, 146, 42, 0.08); }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Mobile ── */
 @media (max-width: 480px) {
-  .btn-primary, .btn-outline { width: 100%; text-align: center; padding: 14px 20px; }
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    text-align: center;
+    padding: 15px 20px;
+    display: block;
+  }
 }
