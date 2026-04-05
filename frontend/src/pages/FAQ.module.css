@@ -6,13 +6,13 @@
 .layout {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: clamp(40px, 6vw, 80px);
+  gap: clamp(36px, 6vw, 80px);
   align-items: start;
 }
 
 .item {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 18px 0;
+  padding: 4px 0;
   cursor: pointer;
 }
 
@@ -21,15 +21,18 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  font-size: clamp(0.88rem, 1.5vw, 0.95rem);
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
   font-weight: 600;
   line-height: 1.4;
+  padding: 16px 0;
+  /* Minimum touch target */
+  min-height: 52px;
 }
 
 .icon {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.3);
   display: flex;
@@ -45,27 +48,28 @@
 }
 
 .answer {
-  font-size: 0.87rem;
+  font-size: clamp(0.82rem, 1.3vw, 0.87rem);
   color: rgba(255, 255, 255, 0.6);
-  line-height: 1.7;
+  line-height: 1.75;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.35s ease, opacity 0.3s, margin-top 0.3s;
+  transition: max-height 0.4s ease, opacity 0.3s, padding-bottom 0.3s;
   opacity: 0;
 }
 
 .open .answer {
-  max-height: 300px;
+  /* Large enough for any answer */
+  max-height: 400px;
   opacity: 1;
-  margin-top: 12px;
+  padding-bottom: 16px;
 }
 
 /* ── Tablet ── */
 @media (max-width: 1024px) {
-  .layout { grid-template-columns: 1fr 1.5fr; gap: 48px; }
+  .layout { grid-template-columns: 1fr 1.5fr; gap: 40px; }
 }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .layout { grid-template-columns: 1fr; gap: 36px; }
+  .layout { grid-template-columns: 1fr; gap: 32px; }
 }
