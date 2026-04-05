@@ -2,16 +2,30 @@ import { Link } from 'react-router-dom'
 import styles from './Footer.module.css'
 
 const serviceLinks = [
-  'Certificate of Sponsorship', 'Skilled Worker Visa', 'Health & Care Visa',
-  'Sponsor Licence', 'Visa Extension & ILR', 'Compliance Audit',
+  { label: 'Certificate of Sponsorship', to: '/services' },
+  { label: 'Skilled Worker Visa',        to: '/visa-types' },
+  { label: 'Health & Care Visa',         to: '/visa-types' },
+  { label: 'Sponsor Licence',            to: '/services' },
+  { label: 'Visa Extension & ILR',       to: '/services' },
+  { label: 'Compliance Audit',           to: '/services' },
 ]
+
 const resourceLinks = [
-  'Eligibility Checker', 'CoS Document Checklist', 'Salary Threshold Guide',
-  'SOC Code Finder', 'Blog & Updates', 'UKVI Fee Calculator',
+  { label: 'Eligibility Checker',      to: '/eligibility' },
+  { label: 'CoS Document Checklist',   to: '/documents' },
+  { label: 'Salary Threshold Guide',   to: '/documents' },
+  { label: 'SOC Code Finder',          to: '/documents' },
+  { label: 'Blog & Updates',           to: '/' },
+  { label: 'UKVI Fee Calculator',      to: '/documents' },
 ]
+
 const companyLinks = [
-  'About BritPath', 'Our Advisers', 'OISC Registration',
-  'Contact Us', 'Complaints Policy', 'Privacy Policy',
+  { label: 'About BritPath',    to: '/' },
+  { label: 'Our Advisers',      to: '/' },
+  { label: 'OISC Registration', to: '/' },
+  { label: 'Contact Us',        to: '/contact' },
+  { label: 'Complaints Policy', to: '/' },
+  { label: 'Privacy Policy',    to: '/' },
 ]
 
 export default function Footer() {
@@ -19,7 +33,9 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.grid}>
         <div className={styles.brand}>
-          <div className={styles.logo}><span className={styles.flag}>🇬🇧</span> BritPath</div>
+          <Link to="/" className={styles.logo}>
+            <span className={styles.flag}>🇬🇧</span> BritPath
+          </Link>
           <p>OISC-regulated UK immigration specialists helping employers and workers navigate the Certificate of Sponsorship and Skilled Worker Visa process with confidence.</p>
           <div className={styles.socials}>
             {['in', '𝕏', 'f', '▶'].map((s) => (
@@ -27,16 +43,16 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <FooterCol title="Services" items={serviceLinks} />
-        <FooterCol title="Resources" items={resourceLinks} />
-        <FooterCol title="Company" items={companyLinks} />
+        <FooterCol title="Services"   items={serviceLinks} />
+        <FooterCol title="Resources"  items={resourceLinks} />
+        <FooterCol title="Company"    items={companyLinks} />
       </div>
       <div className={styles.bottom}>
         <span>© 2025 BritPath Immigration Services Ltd. All rights reserved. OISC Reg No. F12345678</span>
         <span>
-          <Link to="/privacy">Privacy</Link> &nbsp;·&nbsp;
-          <Link to="/terms">Terms</Link> &nbsp;·&nbsp;
-          <Link to="/cookies">Cookies</Link>
+          <Link to="/">Privacy</Link> &nbsp;·&nbsp;
+          <Link to="/">Terms</Link> &nbsp;·&nbsp;
+          <Link to="/">Cookies</Link>
         </span>
         <span className={styles.disclaimer}>
           This website is for informational purposes only and does not constitute legal advice.
@@ -51,8 +67,10 @@ function FooterCol({ title, items }) {
     <div className={styles.col}>
       <h4>{title}</h4>
       <ul>
-        {items.map((item) => (
-          <li key={item}><a href="#">{item}</a></li>
+        {items.map(({ label, to }) => (
+          <li key={label}>
+            <Link to={to}>{label}</Link>
+          </li>
         ))}
       </ul>
     </div>
