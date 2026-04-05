@@ -34,7 +34,7 @@ export default function Footer() {
       <div className={styles.grid}>
         <div className={styles.brand}>
           <Link to="/" className={styles.logo}>
-            <span className={styles.flag}>🇬🇧</span> BritPath
+            <span className={styles.flag}>🇬🇧</span> Hc-One
           </Link>
           <p>OISC-regulated UK immigration specialists helping employers and workers navigate the Certificate of Sponsorship and Skilled Worker Visa process with confidence.</p>
           <div className={styles.socials}>
