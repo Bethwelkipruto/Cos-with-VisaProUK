@@ -20,7 +20,7 @@ const resourceLinks = [
 ]
 
 const companyLinks = [
-  { label: 'About BritPath',    to: '/' },
+  { label: 'About HC-One',    to: '/' },
   { label: 'Our Advisers',      to: '/' },
   { label: 'OISC Registration', to: '/' },
   { label: 'Contact Us',        to: '/contact' },
@@ -48,7 +48,7 @@ export default function Footer() {
         <FooterCol title="Company"    items={companyLinks} />
       </div>
       <div className={styles.bottom}>
-        <span>© 2025 BritPath Immigration Services Ltd. All rights reserved. OISC Reg No. F12345678</span>
+        <span>© 2025 HC-One Immigration Services Ltd</span>
         <span>
           <Link to="/">Privacy</Link> &nbsp;·&nbsp;
           <Link to="/">Terms</Link> &nbsp;·&nbsp;
