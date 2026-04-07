@@ -16,7 +16,7 @@ export default function Documents() {
           <DocCategory title="For the Worker (Visa Application)" docs={workerDocs} />
         </div>
         <div className={styles.sidebar}>
-          <h3>Fee Summary (2024–25)</h3>
+          <h3>Fee Summary (2025–30)</h3>
           <table className={styles.table}>
             <tbody>
               {fees.map(({ label, amount }) => (

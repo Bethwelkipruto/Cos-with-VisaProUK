@@ -11,17 +11,6 @@
     />
   </head>
   <body>
-    <script>
-      // GitHub Pages SPA redirect handler
-      // Reads the path saved by 404.html and restores it before React boots
-      (function () {
-        var redirect = sessionStorage.getItem('spa_redirect');
-        if (redirect) {
-          sessionStorage.removeItem('spa_redirect');
-          window.history.replaceState(null, '', '/Cos-with-VisaProUK' + redirect);
-        }
-      })();
-    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
