@@ -11,6 +11,11 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+
+.navScrolled {
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45);
 }
 
 .logo {

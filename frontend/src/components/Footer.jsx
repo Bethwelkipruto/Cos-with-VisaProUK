@@ -58,6 +58,12 @@ export default function Footer() {
           This website is for informational purposes only and does not constitute legal advice.
         </span>
       </div>
+      <div className={styles.compliance}>
+        <span>🏛️ OISC Regulated</span>
+        <span>🔒 GDPR Compliant</span>
+        <span>✅ UKVI Approved Sponsor</span>
+        <span>📋 A-Rated Sponsor Licence</span>
+      </div>
     </footer>
   )
 }

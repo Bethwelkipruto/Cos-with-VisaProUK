@@ -13,8 +13,9 @@ export default function Services() {
         </p>
       </div>
       <div className={styles.grid}>
-        {services.map(({ icon, title, desc }) => (
-          <div key={title} className={styles.card}>
+        {services.map(({ icon, title, desc }, i) => (
+          <div key={title} className={`${styles.card} ${i === 0 ? styles.featured : ''}`}>
+            {i === 0 && <div className={styles.popularBadge}>⭐ Most Requested</div>}
             <div className={styles.icon}>{icon}</div>
             <h3>{title}</h3>
             <p>{desc}</p>

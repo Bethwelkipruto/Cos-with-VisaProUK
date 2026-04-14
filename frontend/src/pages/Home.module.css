@@ -169,3 +169,133 @@
 @media (min-width: 1440px) {
   .stats { grid-template-columns: repeat(4, auto); gap: 56px; }
 }
+
+/* ── Why Choose Us ── */
+.whySection {
+  background: var(--navy);
+  padding: var(--section-py) var(--section-px);
+}
+
+.whyHeader {
+  text-align: center;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.whyHeader .section-title,
+.whyHeader .section-sub { margin: 0 auto; }
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+}
+
+.whyCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: clamp(20px, 3vw, 32px) clamp(16px, 2vw, 24px);
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.whyCard::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.whyCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--border);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.whyCard:hover::after { opacity: 1; }
+
+.whyIcon {
+  font-size: 1.6rem;
+  width: 52px;
+  height: 52px;
+  background: rgba(200, 146, 42, 0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.whyCard h3 {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.whyCard p {
+  font-size: clamp(0.8rem, 1.2vw, 0.86rem);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.65;
+}
+
+@media (max-width: 1024px) {
+  .whyGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .whyGrid { grid-template-columns: 1fr; }
+}
+
+/* ── Bottom CTA ── */
+.ctaSection {
+  position: relative;
+  background: linear-gradient(135deg, var(--royal), var(--navy2));
+  padding: var(--section-py) var(--section-px);
+  overflow: hidden;
+  text-align: center;
+}
+
+.ctaBg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200, 146, 42, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.ctaInner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ctaInner h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.ctaInner p {
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.ctaBtns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .ctaBtns { flex-direction: column; align-items: stretch; }
+  .ctaBtns a { text-align: center; }
+}

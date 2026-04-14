@@ -66,6 +66,13 @@ img, video { max-width: 100%; display: block; }
   margin-top: 14px;
 }
 
+/* Subtle divider between alternating sections */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 var(--section-px);
+}
+
 /* ── Shared buttons ── */
 .btn-primary {
   background: var(--gold);

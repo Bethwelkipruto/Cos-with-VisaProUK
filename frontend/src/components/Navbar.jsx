@@ -8,23 +8,29 @@ const links = [
   { to: '/visa-types', label: 'Visa Types' },
   { to: '/documents', label: 'Documents' },
   { to: '/faq', label: 'FAQ' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
 
-  // Close menu on route change
   useEffect(() => setOpen(false), [location])
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [open])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <nav className={styles.nav}>
+    <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`}>
       <Link to="/" className={styles.logo}>
         <span className={styles.flag}>🇬🇧</span> HC-One
       </Link>

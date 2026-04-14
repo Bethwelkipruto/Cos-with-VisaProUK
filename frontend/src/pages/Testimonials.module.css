@@ -11,6 +11,60 @@
 .header .section-title,
 .header .section-sub { margin: 0 auto; }
 
+.ratingBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 48px);
+  margin-top: 32px;
+  padding: 24px clamp(20px, 4vw, 48px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  flex-wrap: wrap;
+}
+
+.ratingScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ratingNum {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: var(--gold2);
+  line-height: 1;
+}
+
+.ratingStars {
+  color: var(--gold2);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.ratingLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ratingDivider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .ratingDivider { display: none; }
+  .ratingBar { gap: 16px; }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

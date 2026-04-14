@@ -31,6 +31,27 @@
   overflow: hidden;
 }
 
+.featured {
+  border-color: var(--border);
+  background: linear-gradient(135deg, rgba(200, 146, 42, 0.1), rgba(255, 255, 255, 0.04));
+}
+
+.popularBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(200, 146, 42, 0.18);
+  border: 1px solid var(--border);
+  color: var(--gold2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+}
+
 .card::before {
   content: '';
   position: absolute;
