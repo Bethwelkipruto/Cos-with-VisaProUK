@@ -1,22 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom'
 import styles from './Navbar.module.css'
 
 const servicesMenu = [
-  { icon: '📜', label: 'Certificate of Sponsorship', to: '/services', desc: 'Defined & Undefined CoS assigned via SMS' },
-  { icon: '🛂', label: 'Skilled Worker Visa', to: '/services', desc: 'Full application support, end-to-end' },
-  { icon: '🏢', label: 'Sponsor Licence', to: '/services', desc: 'New applications, renewals & expansions' },
-  { icon: '🔄', label: 'Visa Extensions & ILR', to: '/services', desc: 'Switch categories or apply for settlement' },
-  { icon: '📊', label: 'Compliance Audits', to: '/services', desc: 'Pre-UKVI inspection & HR system checks' },
-  { icon: '🌍', label: 'Global Mobility', to: '/services', desc: 'Intra-company transfers & business visitor rules' },
+  { icon: '📜', label: 'Certificate of Sponsorship', to: '/services', slug: 'cos', desc: 'Defined & Undefined CoS assigned via SMS' },
+  { icon: '🛂', label: 'Skilled Worker Visa', to: '/services', slug: 'skilled-worker', desc: 'Full application support, end-to-end' },
+  { icon: '🏢', label: 'Sponsor Licence', to: '/services', slug: 'sponsor-licence', desc: 'New applications, renewals & expansions' },
+  { icon: '🔄', label: 'Visa Extensions & ILR', to: '/services', slug: 'extensions-ilr', desc: 'Switch categories or apply for settlement' },
+  { icon: '📊', label: 'Compliance Audits', to: '/services', slug: 'compliance', desc: 'Pre-UKVI inspection & HR system checks' },
+  { icon: '🌍', label: 'Global Mobility', to: '/services', slug: 'global-mobility', desc: 'Intra-company transfers & business visitor rules' },
 ]
 
 const visaMenu = [
-  { icon: '⭐', label: 'Skilled Worker Visa', to: '/visa-types', desc: 'Most popular — leads to ILR after 5 years' },
-  { icon: '🏥', label: 'Health & Care Worker', to: '/visa-types', desc: 'Reduced fees for NHS & CQC-regulated roles' },
-  { icon: '🏢', label: 'Senior / Specialist Worker', to: '/visa-types', desc: 'Intra-company transfers, no IELTS required' },
-  { icon: '🎓', label: 'Graduate Trainee', to: '/visa-types', desc: 'Short-term training programme transfers' },
-  { icon: '🚀', label: 'Scale-Up Worker', to: '/visa-types', desc: 'Flexible route for high-growth businesses' },
+  { icon: '⭐', label: 'Skilled Worker Visa', to: '/visa-types', slug: 'skilled-worker', desc: 'Most popular — leads to ILR after 5 years' },
+  { icon: '🏥', label: 'Health & Care Worker', to: '/visa-types', slug: 'health-care', desc: 'Reduced fees for NHS & CQC-regulated roles' },
+  { icon: '🏢', label: 'Senior / Specialist Worker', to: '/visa-types', slug: 'senior-specialist', desc: 'Intra-company transfers, no IELTS required' },
+  { icon: '🎓', label: 'Graduate Trainee', to: '/visa-types', slug: 'graduate-trainee', desc: 'Short-term training programme transfers' },
+  { icon: '🚀', label: 'Scale-Up Worker', to: '/visa-types', slug: 'scale-up', desc: 'Flexible route for high-growth businesses' },
 ]
 
 const simpleLinks = [
@@ -26,15 +26,15 @@ const simpleLinks = [
   { to: '/contact', label: 'Contact' },
 ]
 
-function DropdownItem({ icon, label, to, desc, onClick }) {
+function DropdownItem({ icon, label, desc, onClick }) {
   return (
-    <Link to={to} className={styles.dropItem} onClick={onClick}>
+    <button type="button" className={styles.dropItem} onClick={onClick}>
       <span className={styles.dropIcon}>{icon}</span>
       <span>
         <span className={styles.dropLabel}>{label}</span>
         <span className={styles.dropDesc}>{desc}</span>
       </span>
-    </Link>
+    </button>
   )
 }
 
@@ -69,7 +69,15 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  const navigate = useNavigate()
+
   const toggleDropdown = (name) => setActiveDropdown(prev => prev === name ? null : name)
+
+  const handleMenuClick = (to, slug) => {
+    setActiveDropdown(null)
+    setOpen(false)
+    navigate(`${to}#${slug}`)
+  }
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`} ref={dropRef}>
@@ -93,7 +101,7 @@ export default function Navbar() {
             onMouseLeave={() => setActiveDropdown(null)}>
             <div className={styles.dropGrid}>
               {servicesMenu.map(item => (
-                <DropdownItem key={item.label} {...item} onClick={() => setActiveDropdown(null)} />
+                <DropdownItem key={item.label} {...item} onClick={() => handleMenuClick(item.to, item.slug)} />
               ))}
             </div>
             <div className={styles.dropFooter}>
@@ -116,7 +124,7 @@ export default function Navbar() {
             onMouseLeave={() => setActiveDropdown(null)}>
             <div className={styles.dropList}>
               {visaMenu.map(item => (
-                <DropdownItem key={item.label} {...item} onClick={() => setActiveDropdown(null)} />
+                <DropdownItem key={item.label} {...item} onClick={() => handleMenuClick(item.to, item.slug)} />
               ))}
             </div>
             <div className={styles.dropFooter}>
@@ -158,10 +166,10 @@ export default function Navbar() {
           </button>
           {activeDropdown === 'services' && (
             <div className={styles.mobileSubmenu}>
-              {servicesMenu.map(({ icon, label, to }) => (
-                <Link key={label} to={to} className={styles.mobileSubLink} onClick={() => setOpen(false)}>
+              {servicesMenu.map(({ icon, label, to, slug }) => (
+                <button key={label} type="button" className={styles.mobileSubLink} onClick={() => handleMenuClick(to, slug)}>
                   <span>{icon}</span> {label}
-                </Link>
+                </button>
               ))}
             </div>
           )}
@@ -175,10 +183,10 @@ export default function Navbar() {
           </button>
           {activeDropdown === 'visa' && (
             <div className={styles.mobileSubmenu}>
-              {visaMenu.map(({ icon, label, to }) => (
-                <Link key={label} to={to} className={styles.mobileSubLink} onClick={() => setOpen(false)}>
+              {visaMenu.map(({ icon, label, to, slug }) => (
+                <button key={label} type="button" className={styles.mobileSubLink} onClick={() => handleMenuClick(to, slug)}>
                   <span>{icon}</span> {label}
-                </Link>
+                </button>
               ))}
             </div>
           )}

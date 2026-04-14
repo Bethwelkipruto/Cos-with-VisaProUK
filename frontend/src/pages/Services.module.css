@@ -29,6 +29,7 @@
   overflow: hidden;
   transition: border-color 0.25s, box-shadow 0.25s;
   position: relative;
+  scroll-margin-top: calc(var(--nav-h) + 24px);
 }
 
 .card::before {

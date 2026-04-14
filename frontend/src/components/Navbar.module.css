@@ -144,6 +144,12 @@
   padding: 12px 14px;
   border-radius: 9px;
   transition: background 0.18s;
+  background: none;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
 }
 .dropItem:hover { background: rgba(255,255,255,0.06); }
 
@@ -345,6 +351,14 @@
     color: rgba(255,255,255,0.7);
     border-bottom: 1px solid rgba(255,255,255,0.04);
     transition: color 0.2s, background 0.2s;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
   }
   .mobileSubLink:hover { color: var(--gold2); background: rgba(255,255,255,0.03); }
 

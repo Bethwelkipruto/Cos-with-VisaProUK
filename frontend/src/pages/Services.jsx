@@ -1,7 +1,17 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { services } from '../data'
 import styles from './Services.module.css'
+
+// Must match the slugs in Navbar servicesMenu
+const serviceSlugs = [
+  'cos',
+  'skilled-worker',
+  'sponsor-licence',
+  'extensions-ilr',
+  'compliance',
+  'global-mobility',
+]
 
 const serviceDetails = {
   'Certificate of Sponsorship (CoS)': [
@@ -50,6 +60,29 @@ const serviceDetails = {
 
 export default function Services() {
   const [expanded, setExpanded] = useState(null)
+  const location = useLocation()
+
+  // When the URL hash changes (e.g. /services#cos), scroll to that card and expand it
+  useEffect(() => {
+    const hash = location.hash.replace('#', '')
+    if (!hash) return
+
+    const slugIndex = serviceSlugs.indexOf(hash)
+    if (slugIndex === -1) return
+
+    const title = services[slugIndex]?.title
+    if (title) setExpanded(title)
+
+    // Small delay so the DOM has rendered the expanded panel before scrolling
+    setTimeout(() => {
+      const el = document.getElementById(hash)
+      if (el) {
+        const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 64
+        const top = el.getBoundingClientRect().top + window.scrollY - navH - 24
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
+    }, 80)
+  }, [location.hash])
 
   const toggle = (title) => setExpanded(prev => prev === title ? null : title)
 
@@ -67,8 +100,13 @@ export default function Services() {
         {services.map(({ icon, title, desc }, i) => {
           const isOpen = expanded === title
           const details = serviceDetails[title] || []
+          const slug = serviceSlugs[i]
           return (
-            <div key={title} className={`${styles.card} ${i === 0 ? styles.featured : ''} ${isOpen ? styles.cardOpen : ''}`}>
+            <div
+              key={title}
+              id={slug}
+              className={`${styles.card} ${i === 0 ? styles.featured : ''} ${isOpen ? styles.cardOpen : ''}`}
+            >
               {i === 0 && <div className={styles.popularBadge}>⭐ Most Requested</div>}
               <div className={styles.cardTop}>
                 <div className={styles.icon}>{icon}</div>
