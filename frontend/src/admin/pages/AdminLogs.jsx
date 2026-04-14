@@ -1,18 +1,29 @@
-import { useState } from 'react'
-import { mockLogs } from '../mockData'
+import { useState, useEffect } from 'react'
+import { api } from '../../api'
 
 export default function AdminLogs() {
-  const [filter, setFilter] = useState('ALL')
-  const [search, setSearch] = useState('')
+  const [logs, setLogs]       = useState([])
+  const [filter, setFilter]   = useState('ALL')
+  const [search, setSearch]   = useState('')
+  const [loading, setLoading] = useState(true)
 
   const LEVELS = ['ALL', 'INFO', 'WARN', 'ERROR']
 
-  const filtered = mockLogs.filter(l => {
+  useEffect(() => {
+    api.getLogs()
+      .then(setLogs)
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
+  const filtered = logs.filter(l => {
     const matchLevel  = filter === 'ALL' || l.level === filter
     const matchSearch = l.message.toLowerCase().includes(search.toLowerCase()) ||
-                        l.source.toLowerCase().includes(search.toLowerCase())
+                        (l.source || '').toLowerCase().includes(search.toLowerCase())
     return matchLevel && matchSearch
   })
+
+  if (loading) return <div className="admin-page-header"><p>Loading logs…</p></div>
 
   return (
     <>
@@ -26,13 +37,7 @@ export default function AdminLogs() {
           <h3>Logs ({filtered.length})</h3>
           <div style={{ display: 'flex', gap: '6px' }}>
             {LEVELS.map(l => (
-              <button
-                key={l}
-                className={`btn-admin ${filter === l ? 'btn-admin-gold' : 'btn-admin-ghost'}`}
-                onClick={() => setFilter(l)}
-              >
-                {l}
-              </button>
+              <button key={l} className={`btn-admin ${filter === l ? 'btn-admin-gold' : 'btn-admin-ghost'}`} onClick={() => setFilter(l)}>{l}</button>
             ))}
           </div>
           <div className="admin-table-search">
@@ -41,26 +46,27 @@ export default function AdminLogs() {
           </div>
         </div>
 
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Level</th>
-              <th>Source</th>
-              <th>Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(l => (
-              <tr key={l.id}>
-                <td style={{ color: 'var(--a-muted)', fontSize: '0.78rem', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{l.time}</td>
-                <td><span className={`log-level-${l.level}`} style={{ fontWeight: 700, fontSize: '0.78rem' }}>{l.level}</span></td>
-                <td><span className="badge badge-editor">{l.source}</span></td>
-                <td style={{ fontSize: '0.83rem' }}>{l.message}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {filtered.length === 0 ? (
+          <div className="empty-state"><div className="empty-state-icon">📋</div><p>No logs yet.</p></div>
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr><th>Time</th><th>Level</th><th>Source</th><th>Message</th></tr>
+            </thead>
+            <tbody>
+              {filtered.map(l => (
+                <tr key={l.id}>
+                  <td style={{ color: 'var(--a-muted)', fontSize: '0.78rem', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>
+                    {new Date(l.created_at).toLocaleString()}
+                  </td>
+                  <td><span className={`log-level-${l.level}`} style={{ fontWeight: 700, fontSize: '0.78rem' }}>{l.level}</span></td>
+                  <td><span className="badge badge-editor">{l.source || '—'}</span></td>
+                  <td style={{ fontSize: '0.83rem' }}>{l.message}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </>
   )

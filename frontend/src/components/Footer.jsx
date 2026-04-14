@@ -26,6 +26,7 @@ const companyLinks = [
   { label: 'Contact Us',        to: '/contact' },
   { label: 'Complaints Policy', to: '/' },
   { label: 'Privacy Policy',    to: '/' },
+  { label: 'Admin Portal',      to: '/admin/login' },
 ]
 
 export default function Footer() {

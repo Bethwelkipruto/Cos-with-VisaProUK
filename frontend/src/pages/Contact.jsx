@@ -1,34 +1,39 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { api } from '../api'
 import styles from './Contact.module.css'
 
 const departments = [
-  {
-    icon: '📧',
-    title: 'General Enquiries',
-    emails: ['info@visaglobal.co.uk'],
-    desc: 'For any general questions about our services.',
-  },
-  {
-    icon: '👥',
-    title: 'HR / Recruitment Desk',
-    emails: ['recruitment@visaglobal.co.uk', 'hr@visaglobal.co.uk'],
-    desc: 'Employer onboarding, recruitment partnerships and HR support.',
-  },
-  {
-    icon: '📜',
-    title: 'CoS Processing',
-    emails: ['cos@visaglobal.co.uk'],
-    desc: 'Certificate of Sponsorship assignments and SMS queries.',
-  },
-  {
-    icon: '🛟',
-    title: 'Support / Help',
-    emails: ['support@visaglobal.co.uk'],
-    desc: 'Technical issues, case updates and urgent assistance.',
-  },
+  { icon: '📧', title: 'General Enquiries',   emails: ['info@visaglobal.co.uk'],                              desc: 'For any general questions about our services.' },
+  { icon: '👥', title: 'HR / Recruitment Desk', emails: ['recruitment@visaglobal.co.uk', 'hr@visaglobal.co.uk'], desc: 'Employer onboarding, recruitment partnerships and HR support.' },
+  { icon: '📜', title: 'CoS Processing',       emails: ['cos@visaglobal.co.uk'],                              desc: 'Certificate of Sponsorship assignments and SMS queries.' },
+  { icon: '🛟', title: 'Support / Help',        emails: ['support@visaglobal.co.uk'],                          desc: 'Technical issues, case updates and urgent assistance.' },
 ]
 
+const EMPTY = { name: '', email: '', phone: '', subject: '', message: '' }
+
 export default function Contact() {
+  const [form, setForm]       = useState(EMPTY)
+  const [status, setStatus]   = useState(null) // null | 'sending' | 'success' | 'error'
+  const [errMsg, setErrMsg]   = useState('')
+
+  function handleChange(e) {
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setStatus('sending')
+    try {
+      await api.sendContact(form)
+      setStatus('success')
+      setForm(EMPTY)
+    } catch (err) {
+      setErrMsg(err.message)
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       {/* ── Hero CTA ── */}
@@ -43,12 +48,7 @@ export default function Contact() {
           </p>
           <div className={styles.heroBtns}>
             <Link to="/eligibility" className={styles.btnGold}>Check My Eligibility — Free</Link>
-            <a
-              href="https://wa.me/447000000000"
-              target="_blank"
-              rel="noreferrer"
-              className={styles.btnWhatsApp}
-            >
+            <a href="https://wa.me/447000000000" target="_blank" rel="noreferrer" className={styles.btnWhatsApp}>
               <span>💬</span> Chat on WhatsApp
             </a>
           </div>
@@ -71,10 +71,8 @@ export default function Contact() {
                     <h4>{title}</h4>
                     <p>{desc}</p>
                     <div className={styles.emails}>
-                      {emails.map((email) => (
-                        <a key={email} href={`mailto:${email}`} className={styles.emailLink}>
-                          {email}
-                        </a>
+                      {emails.map(email => (
+                        <a key={email} href={`mailto:${email}`} className={styles.emailLink}>{email}</a>
                       ))}
                     </div>
                   </div>
@@ -83,8 +81,52 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right column — WhatsApp + Hours + Address */}
+          {/* Right column */}
           <div className={styles.col}>
+
+            {/* Contact Form */}
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardHeader}>
+                <span className={styles.infoIcon}>✉️</span>
+                <h3>Send Us a Message</h3>
+              </div>
+
+              {status === 'success' ? (
+                <p style={{ color: '#4ade80', fontWeight: 600 }}>✅ Message sent! We'll get back to you shortly.</p>
+              ) : (
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <input
+                    name="name" value={form.name} onChange={handleChange}
+                    placeholder="Full Name" required
+                    style={inputStyle}
+                  />
+                  <input
+                    name="email" type="email" value={form.email} onChange={handleChange}
+                    placeholder="Email Address" required
+                    style={inputStyle}
+                  />
+                  <input
+                    name="phone" value={form.phone} onChange={handleChange}
+                    placeholder="Phone Number (optional)"
+                    style={inputStyle}
+                  />
+                  <input
+                    name="subject" value={form.subject} onChange={handleChange}
+                    placeholder="Subject"
+                    style={inputStyle}
+                  />
+                  <textarea
+                    name="message" value={form.message} onChange={handleChange}
+                    placeholder="Your message…" required rows={4}
+                    style={{ ...inputStyle, resize: 'vertical' }}
+                  />
+                  {status === 'error' && <p style={{ color: '#f87171', fontSize: '0.85rem' }}>{errMsg}</p>}
+                  <button type="submit" className={styles.btnGold} disabled={status === 'sending'} style={{ border: 'none', cursor: 'pointer' }}>
+                    {status === 'sending' ? 'Sending…' : 'Send Message'}
+                  </button>
+                </form>
+              )}
+            </div>
 
             {/* WhatsApp */}
             <div className={styles.infoCard}>
@@ -93,12 +135,7 @@ export default function Contact() {
                 <h3>WhatsApp Support</h3>
               </div>
               <p>Prefer to message? Reach our support team directly on WhatsApp for quick responses on your case.</p>
-              <a
-                href="https://wa.me/447000000000"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.whatsappBtn}
-              >
+              <a href="https://wa.me/447000000000" target="_blank" rel="noreferrer" className={styles.whatsappBtn}>
                 💬 Message Us on WhatsApp
               </a>
             </div>
@@ -122,31 +159,21 @@ export default function Contact() {
               <div className={styles.timezone}>🇬🇧 All times are UK time (GMT / BST)</div>
             </div>
 
-            {/* Office Address */}
-            <div className={styles.infoCard}>
-              <div className={styles.infoCardHeader}>
-                <span className={styles.infoIcon}>📍</span>
-                <h3>Office Address</h3>
-              </div>
-              <address className={styles.address}>
-                <strong>VisaGlobal</strong><br />
-                Recruitment and Immigration Services<br />
-                Birmingham<br />
-                United Kingdom
-              </address>
-              <a
-                href="https://maps.google.com/?q=Birmingham,United+Kingdom"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.mapLink}
-              >
-                📍 View on Google Maps →
-              </a>
-            </div>
-
           </div>
         </div>
       </section>
     </>
   )
+}
+
+const inputStyle = {
+  background: 'rgba(255,255,255,0.06)',
+  border: '1px solid rgba(255,255,255,0.12)',
+  borderRadius: '7px',
+  padding: '10px 14px',
+  color: '#fff',
+  fontSize: '0.9rem',
+  outline: 'none',
+  width: '100%',
+  boxSizing: 'border-box',
 }

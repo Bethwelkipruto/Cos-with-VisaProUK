@@ -142,7 +142,10 @@ export default function Navbar() {
         ))}
       </ul>
 
-      <Link to="/eligibility" className={`${styles.cta} ${styles.desktopCta}`}>Check Eligibility</Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} className={styles.desktopCta}>
+        <Link to="/eligibility" className={styles.cta}>Check Eligibility</Link>
+        <Link to="/admin/login" className={styles.adminLink}>Admin</Link>
+      </div>
 
       {/* Hamburger */}
       <button
@@ -198,6 +201,7 @@ export default function Navbar() {
 
         <div className={styles.mobileCtaWrap}>
           <Link to="/eligibility" className={styles.cta} onClick={() => setOpen(false)}>Check Eligibility</Link>
+          <Link to="/admin/login" className={styles.adminLink} onClick={() => setOpen(false)}>Admin Login</Link>
         </div>
       </div>
 

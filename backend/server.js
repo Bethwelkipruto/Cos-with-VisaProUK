@@ -8,11 +8,14 @@ app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
 app.use(express.json())
 
 // Routes
-app.use('/api/auth',         require('./routes/auth'))
-app.use('/api/users',        require('./routes/users'))
-app.use('/api/applications', require('./routes/applications'))
-app.use('/api/payments',     require('./routes/payments'))
-app.use('/api/contact',      require('./routes/contact'))
+app.use('/api/auth',          require('./routes/auth'))
+app.use('/api/users',         require('./routes/users'))
+app.use('/api/applications',  require('./routes/applications'))
+app.use('/api/payments',      require('./routes/payments'))
+app.use('/api/contact',       require('./routes/contact'))
+app.use('/api/stats',         require('./routes/stats'))
+app.use('/api/notifications', require('./routes/notifications'))
+app.use('/api/logs',          require('./routes/logs'))
 
 app.get('/', (req, res) => res.json({ status: 'HC-One backend running' }))
 

@@ -1,18 +1,33 @@
-import { useState } from 'react'
-import { mockUsers } from '../mockData'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../AuthContext'
+import { api } from '../../api'
 
-const EMPTY = { name: '', email: '', role: 'Viewer', status: 'Active' }
+const EMPTY = { name: '', email: '', role: 'Viewer', status: 'Active', password: '' }
 
 export default function AdminUsers() {
   const { user: authUser } = useAuth()
   const isAdmin = authUser?.role === 'Admin'
 
-  const [users, setUsers]       = useState(mockUsers)
-  const [search, setSearch]     = useState('')
-  const [modal, setModal]       = useState(null)   // null | 'create' | 'edit'
-  const [form, setForm]         = useState(EMPTY)
-  const [editId, setEditId]     = useState(null)
+  const [users, setUsers]   = useState([])
+  const [search, setSearch] = useState('')
+  const [modal, setModal]   = useState(null)
+  const [form, setForm]     = useState(EMPTY)
+  const [editId, setEditId] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError]   = useState('')
+
+  useEffect(() => { fetchUsers() }, [])
+
+  async function fetchUsers() {
+    try {
+      const data = await api.getUsers()
+      setUsers(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const filtered = users.filter(u =>
     u.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -20,28 +35,45 @@ export default function AdminUsers() {
   )
 
   function openCreate() { setForm(EMPTY); setEditId(null); setModal('create') }
-  function openEdit(u)  { setForm({ name: u.name, email: u.email, role: u.role, status: u.status }); setEditId(u.id); setModal('edit') }
+  function openEdit(u)  { setForm({ name: u.name, email: u.email, role: u.role, status: u.status, password: '' }); setEditId(u.id); setModal('edit') }
 
-  function saveUser() {
-    if (modal === 'create') {
-      setUsers(prev => [...prev, { ...form, id: Date.now(), joined: new Date().toISOString().slice(0,10), lastLogin: '—' }])
-    } else {
-      setUsers(prev => prev.map(u => u.id === editId ? { ...u, ...form } : u))
+  async function saveUser() {
+    try {
+      if (modal === 'create') {
+        const created = await api.createUser(form)
+        setUsers(prev => [created, ...prev])
+      } else {
+        const updated = await api.updateUser(editId, form)
+        setUsers(prev => prev.map(u => u.id === editId ? updated : u))
+      }
+      setModal(null)
+    } catch (err) {
+      alert(err.message)
     }
-    setModal(null)
   }
 
-  function deleteUser(id) {
-    if (window.confirm('Delete this user?')) setUsers(prev => prev.filter(u => u.id !== id))
+  async function deleteUser(id) {
+    if (!window.confirm('Delete this user?')) return
+    try {
+      await api.deleteUser(id)
+      setUsers(prev => prev.filter(u => u.id !== id))
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
-  function toggleStatus(id) {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, status: u.status === 'Active' ? 'Suspended' : 'Active' } : u))
+  async function toggleStatus(u) {
+    const newStatus = u.status === 'Active' ? 'Suspended' : 'Active'
+    try {
+      const updated = await api.updateUser(u.id, { ...u, status: newStatus })
+      setUsers(prev => prev.map(x => x.id === u.id ? updated : x))
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
-  function resetPassword(u) {
-    alert(`Password reset link sent to ${u.email}`)
-  }
+  if (loading) return <div className="admin-page-header"><p>Loading users…</p></div>
+  if (error)   return <div className="admin-page-header"><p style={{ color: 'red' }}>{error}</p></div>
 
   return (
     <>
@@ -65,12 +97,7 @@ export default function AdminUsers() {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Joined</th>
-              <th>Last Login</th>
+              <th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Last Login</th>
               {isAdmin && <th>Actions</th>}
             </tr>
           </thead>
@@ -81,19 +108,18 @@ export default function AdminUsers() {
                 <td style={{ color: 'var(--a-muted)' }}>{u.email}</td>
                 <td><span className={`badge badge-${u.role.toLowerCase()}`}>{u.role}</span></td>
                 <td><span className={`badge badge-${u.status.toLowerCase()}`}>{u.status}</span></td>
-                <td style={{ color: 'var(--a-muted)' }}>{u.joined}</td>
-                <td style={{ color: 'var(--a-muted)' }}>{u.lastLogin}</td>
+                <td style={{ color: 'var(--a-muted)' }}>{u.joined?.slice(0, 10)}</td>
+                <td style={{ color: 'var(--a-muted)' }}>{u.last_login ? u.last_login.slice(0, 10) : '—'}</td>
                 {isAdmin && (
                   <td>
                     <div className="btn-row">
                       <button className="btn-admin btn-admin-ghost" onClick={() => openEdit(u)}>Edit</button>
                       <button
                         className={`btn-admin ${u.status === 'Active' ? 'btn-admin-danger' : 'btn-admin-success'}`}
-                        onClick={() => toggleStatus(u.id)}
+                        onClick={() => toggleStatus(u)}
                       >
                         {u.status === 'Active' ? 'Suspend' : 'Activate'}
                       </button>
-                      <button className="btn-admin btn-admin-ghost" onClick={() => resetPassword(u)}>Reset PW</button>
                       <button className="btn-admin btn-admin-danger" onClick={() => deleteUser(u.id)}>Delete</button>
                     </div>
                   </td>
@@ -117,19 +143,22 @@ export default function AdminUsers() {
               <label>Email Address</label>
               <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="email@example.com" />
             </div>
+            {modal === 'create' && (
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} placeholder="••••••••" />
+              </div>
+            )}
             <div className="form-group">
               <label>Role</label>
               <select value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}>
-                <option>Admin</option>
-                <option>Editor</option>
-                <option>Viewer</option>
+                <option>Admin</option><option>Editor</option><option>Viewer</option>
               </select>
             </div>
             <div className="form-group">
               <label>Status</label>
               <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
-                <option>Active</option>
-                <option>Suspended</option>
+                <option>Active</option><option>Suspended</option>
               </select>
             </div>
             <div className="btn-row" style={{ marginTop: '8px' }}>

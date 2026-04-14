@@ -34,6 +34,23 @@ CREATE TABLE IF NOT EXISTS payments (
   date      DATE DEFAULT CURRENT_DATE
 );
 
+-- Notifications
+CREATE TABLE IF NOT EXISTS notifications (
+  id         SERIAL PRIMARY KEY,
+  message    TEXT NOT NULL,
+  read       BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Logs
+CREATE TABLE IF NOT EXISTS logs (
+  id         SERIAL PRIMARY KEY,
+  level      VARCHAR(10) DEFAULT 'INFO',
+  source     VARCHAR(50),
+  message    TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Contact messages
 CREATE TABLE IF NOT EXISTS contact_messages (
   id         SERIAL PRIMARY KEY,
