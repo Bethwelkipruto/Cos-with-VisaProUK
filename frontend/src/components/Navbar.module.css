@@ -1,3 +1,4 @@
+/* ── Base nav ── */
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -7,7 +8,7 @@
   justify-content: space-between;
   padding: 0 var(--section-px);
   height: var(--nav-h);
-  background: rgba(10, 22, 40, 0.96);
+  background: rgba(10, 22, 40, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -15,9 +16,10 @@
 }
 
 .navScrolled {
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 }
 
+/* ── Logo ── */
 .logo {
   display: flex;
   align-items: center;
@@ -42,17 +44,151 @@
 }
 
 /* ── Desktop links ── */
-.links {
+.desktopLinks {
   display: flex;
-  gap: 28px;
+  align-items: center;
+  gap: 4px;
   list-style: none;
   font-size: 0.88rem;
   font-weight: 500;
 }
 
-.links a { transition: color 0.2s; }
-.links a:hover, .links .active { color: var(--gold2); }
+.navLink {
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  display: block;
+}
+.navLink:hover { color: var(--gold2); background: rgba(255,255,255,0.04); }
+.activeLink {
+  color: var(--gold2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: block;
+}
 
+/* ── Dropdown trigger ── */
+.hasDropdown { position: relative; }
+
+.dropTrigger {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.dropTrigger:hover,
+.dropTriggerOpen { color: var(--gold2); background: rgba(255,255,255,0.04); }
+
+.chevron {
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.25s ease;
+  transform: rotate(90deg);
+}
+.dropTriggerOpen .chevron { transform: rotate(270deg); }
+
+/* ── Dropdown panel ── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  min-width: 560px;
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 300;
+  overflow: hidden;
+}
+
+.dropdownNarrow { min-width: 400px; }
+
+.dropdownOpen {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 10px;
+}
+
+.dropList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+}
+
+.dropItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  transition: background 0.18s;
+}
+.dropItem:hover { background: rgba(255,255,255,0.06); }
+
+.dropIcon {
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  background: rgba(200,146,42,0.12);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.dropLabel {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+
+.dropDesc {
+  display: block;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+.dropFooter {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 20px;
+  background: rgba(0,0,0,0.15);
+}
+.dropFooter a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold2);
+  transition: color 0.2s;
+}
+.dropFooter a:hover { color: var(--white); }
+
+/* ── Desktop CTA ── */
 .desktopCta {
   background: var(--gold);
   color: var(--navy);
@@ -65,6 +201,7 @@
   min-height: 40px;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 .desktopCta:hover { background: var(--gold2); }
 
@@ -74,7 +211,6 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  /* 44×44 minimum touch target */
   width: 44px;
   height: 44px;
   background: none;
@@ -94,14 +230,25 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform-origin: center;
 }
-
 .burgerTop  { transform: translateY(7px) rotate(45deg); }
 .burgerMid  { opacity: 0; transform: scaleX(0); }
 .burgerBot  { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile CTA inside drawer */
-.mobileCtaItem { display: none; }
+/* ── Mobile drawer ── */
+.drawer {
+  display: none;
+}
 
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 198;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ── CTA shared ── */
 .cta {
   background: var(--gold);
   color: var(--navy);
@@ -116,16 +263,6 @@
 }
 .cta:hover { background: var(--gold2); }
 
-/* ── Overlay ── */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 198;
-  /* Smooth fade */
-  animation: fadeIn 0.2s ease;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -133,62 +270,106 @@
 
 /* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
-  .links { gap: 18px; font-size: 0.84rem; }
+  .desktopLinks { gap: 2px; font-size: 0.82rem; }
   .desktopCta { padding: 9px 14px; font-size: 0.8rem; }
+  .dropdown { min-width: 480px; }
+  .dropdownNarrow { min-width: 340px; }
 }
 
 /* ── Mobile (≤ 768px) ── */
 @media (max-width: 768px) {
   .burger { display: flex; }
+  .desktopLinks { display: none; }
   .desktopCta { display: none; }
-  .mobileCtaItem { display: block; }
 
-  .links {
+  .drawer {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     top: 0; right: 0;
-    /* Drawer width: max 300px but never more than 85vw */
-    width: min(300px, 85vw);
+    width: min(320px, 88vw);
     height: 100dvh;
     background: var(--navy2);
     border-left: 1px solid var(--border);
-    flex-direction: column;
-    gap: 0;
-    /* Account for nav height + safe area */
-    padding: calc(var(--nav-h) + 16px) 0 calc(32px + env(safe-area-inset-bottom));
+    padding: calc(var(--nav-h) + 12px) 0 calc(24px + env(safe-area-inset-bottom));
     z-index: 199;
     transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     overflow-y: auto;
     overscroll-behavior: contain;
   }
 
-  .linksOpen { transform: translateX(0); }
+  .drawerOpen { transform: translateX(0); }
 
-  .links li a {
+  .mobileGroup {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .mobileGroupBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 52px;
+    text-align: left;
+  }
+  .mobileGroupBtn:hover { background: rgba(255,255,255,0.04); color: var(--gold2); }
+
+  .mobileChevron {
+    font-size: 1.1rem;
+    transition: transform 0.25s ease;
+    display: inline-block;
+    transform: rotate(90deg);
+    color: rgba(255,255,255,0.4);
+  }
+  .mobileChevronOpen { transform: rotate(270deg); color: var(--gold2); }
+
+  .mobileSubmenu {
+    background: rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .mobileSubLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 24px 13px 32px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: color 0.2s, background 0.2s;
+  }
+  .mobileSubLink:hover { color: var(--gold2); background: rgba(255,255,255,0.03); }
+
+  .mobileLink {
     display: flex;
     align-items: center;
     padding: 16px 24px;
     font-size: 1rem;
     font-weight: 500;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
     transition: background 0.2s, color 0.2s;
     min-height: 52px;
   }
+  .mobileLink:hover { background: rgba(255,255,255,0.04); color: var(--gold2); }
 
-  .links li a:hover,
-  .links li a:active { background: rgba(255, 255, 255, 0.04); color: var(--gold2); }
-  .links .active { color: var(--gold2); }
-
-  .mobileCtaItem { padding: 20px 24px 0; }
+  .mobileCtaWrap { padding: 20px 24px 0; }
 }
 
-/* ── Small mobile (≤ 390px) ── */
+/* ── Small mobile ── */
 @media (max-width: 390px) {
   .logo { font-size: 1rem; gap: 8px; }
   .flag { width: 26px; height: 18px; }
 }
 
-/* ── Wide (≥ 1440px) ── */
+/* ── Wide ── */
 @media (min-width: 1440px) {
-  .links { gap: 36px; font-size: 0.9rem; }
+  .desktopLinks { gap: 6px; font-size: 0.9rem; }
 }

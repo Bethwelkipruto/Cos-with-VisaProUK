@@ -39,7 +39,18 @@ const whyUs = [
   },
 ]
 
+const miniSteps = [
+  { num: '01', title: 'Free Assessment', desc: 'We check your eligibility and job offer against UKVI thresholds.' },
+  { num: '02', title: 'CoS Assigned', desc: 'Your sponsor assigns the Certificate of Sponsorship via SMS.' },
+  { num: '03', title: 'Visa Application', desc: 'We prepare and submit your full visa application with documents.' },
+  { num: '04', title: 'Decision & Arrival', desc: 'Receive your visa decision and prepare for your UK start date.' },
+]
+
 export default function Home() {
+  const scrollDown = () => {
+    document.getElementById('trust-bar')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <>
       <section className={styles.hero}>
@@ -66,13 +77,41 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* Scroll chevron */}
+        <button className={styles.scrollChevron} onClick={scrollDown} aria-label="Scroll down">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
       </section>
 
-      <div className={styles.trustBar}>
+      <div id="trust-bar" className={styles.trustBar}>
         {trustItems.map((item) => (
           <div key={item} className={styles.trustItem}>{item}</div>
         ))}
       </div>
+
+      {/* ── Mini How It Works ── */}
+      <section className={styles.miniProcess}>
+        <div className={styles.miniHeader}>
+          <div className="section-label">Simple Process</div>
+          <h2 className="section-title">From Application to UK Arrival in 4 Steps</h2>
+        </div>
+        <div className={styles.miniSteps}>
+          {miniSteps.map(({ num, title, desc }, i) => (
+            <div key={num} className={styles.miniStep}>
+              <div className={styles.miniNum}>{num}</div>
+              {i < miniSteps.length - 1 && <div className={styles.miniConnector} />}
+              <h4>{title}</h4>
+              <p>{desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className={styles.miniCta}>
+          <Link to="/process" className="btn-outline">See Full Process →</Link>
+        </div>
+      </section>
 
       {/* ── Why Choose Us ── */}
       <section className={styles.whySection}>

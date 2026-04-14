@@ -170,6 +170,101 @@
   .stats { grid-template-columns: repeat(4, auto); gap: 56px; }
 }
 
+/* ── Scroll chevron ── */
+.scrollChevron {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(32px, 5vw, 56px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: bounce 2s ease-in-out infinite, fadeUp 1.3s 0.5s ease both;
+  transition: border-color 0.2s, color 0.2s;
+}
+.scrollChevron:hover { border-color: var(--gold); color: var(--gold2); }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(7px); }
+}
+
+/* ── Mini Process ── */
+.miniProcess {
+  background: var(--navy2);
+  padding: var(--section-py) var(--section-px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.miniHeader {
+  text-align: center;
+  margin-bottom: clamp(32px, 5vw, 52px);
+}
+
+.miniHeader .section-title { margin: 0 auto; }
+
+.miniSteps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  position: relative;
+}
+
+.miniStep {
+  position: relative;
+  text-align: center;
+  padding: clamp(20px, 3vw, 32px) clamp(14px, 2vw, 20px);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.miniStep:hover { border-color: var(--border); transform: translateY(-4px); }
+
+.miniNum {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: rgba(200, 146, 42, 0.2);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.miniConnector {
+  display: none;
+}
+
+.miniStep h4 {
+  font-size: clamp(0.88rem, 1.4vw, 1rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.miniStep p {
+  font-size: clamp(0.78rem, 1.1vw, 0.84rem);
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+
+.miniCta {
+  text-align: center;
+  margin-top: clamp(28px, 4vw, 44px);
+}
+
+@media (max-width: 1024px) {
+  .miniSteps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .miniSteps { grid-template-columns: 1fr; }
+}
+
 /* ── Why Choose Us ── */
 .whySection {
   background: var(--navy);
