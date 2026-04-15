@@ -29,6 +29,7 @@ app.use('/api/contact',       require('./routes/contact'))
 app.use('/api/stats',         require('./routes/stats'))
 app.use('/api/notifications', require('./routes/notifications'))
 app.use('/api/logs',          require('./routes/logs'))
+app.use('/api/messages',      require('./routes/messages'))
 
 app.get('/', (req, res) => res.json({ status: 'HC-One backend running' }))
 

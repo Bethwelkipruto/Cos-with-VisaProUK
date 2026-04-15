@@ -52,4 +52,8 @@ export const api = {
 
   // Logs
   getLogs: () => request('/api/logs'),
+
+  // Messages
+  getMessages:   ()   => request('/api/messages'),
+  deleteMessage: (id) => request(`/api/messages/${id}`, { method: 'DELETE' }),
 }

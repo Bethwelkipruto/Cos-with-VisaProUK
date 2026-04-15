@@ -7,6 +7,7 @@ const NAV = [
     items: [
       { to: '/admin',              icon: '🏠', label: 'Dashboard' },
       { to: '/admin/users',        icon: '👥', label: 'Users',         badge: 2 },
+      { to: '/admin/messages',      icon: '✉️', label: 'Messages' },
       { to: '/admin/content',      icon: '📝', label: 'Content' },
       { to: '/admin/media',        icon: '🖼️', label: 'Media' },
     ],
