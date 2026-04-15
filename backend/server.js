@@ -4,7 +4,20 @@ const cors = require('cors')
 
 const app = express()
 
-app.use(cors({ origin: ['https://cos-with-visa-pro-uk.vercel.app', 'http://localhost:5173'], credentials: true }))
+app.use(cors({
+  origin: (origin, callback) => {
+    const allowed = [
+      'https://cos-with-visa-pro-uk.vercel.app',
+      'http://localhost:5173',
+    ]
+    if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
+}))
 app.use(express.json())
 
 // Routes
