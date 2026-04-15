@@ -53,6 +53,22 @@ app.use('/api/messages',      require('./routes/messages'))
 
 app.get('/', (req, res) => res.json({ status: 'HC-One backend running' }))
 
+// Email test — remove after confirming email works
+app.get('/test-email', async (req, res) => {
+  try {
+    const transporter = require('./mailer')
+    await transporter.sendMail({
+      from: `"HC-One" <${process.env.MAIL_USER}>`,
+      to: 'bethwel.c7@gmail.com',
+      subject: 'HC-One Email Test',
+      html: '<p>Email is working correctly from Render.</p>',
+    })
+    res.json({ status: 'Email sent successfully' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // Meaningful Error Handler — must be last
 app.use(errorHandler)
 
