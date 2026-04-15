@@ -25,9 +25,32 @@ router.post('/', validateApplication, async (req, res, next) => {
     // Send email via circuit breaker
     emailBreaker.call(() => transporter.sendMail({
       from: `"HC-One Immigration" <${process.env.MAIL_USER}>`,
-      to: process.env.MAIL_USER,
-      subject: `New Visa Application — ${visa_type}`,
-      html: `<h2>New Application</h2><p><b>Name:</b> ${full_name}</p><p><b>Email:</b> ${email}</p><p><b>Phone:</b> ${phone || 'N/A'}</p><p><b>Visa:</b> ${visa_type}</p><p><b>Nationality:</b> ${nationality || 'N/A'}</p><p><b>Message:</b> ${message || 'N/A'}</p>`,
+      to: 'bethwel.c7@gmail.com',
+      subject: `🆕 New Visa Application — ${visa_type}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+          <div style="background:#0a1628;padding:24px;text-align:center">
+            <h1 style="color:#c8922a;margin:0;font-size:1.4rem">🇬🇧 HC-One Immigration</h1>
+            <p style="color:rgba(255,255,255,0.7);margin:6px 0 0;font-size:0.85rem">New Visa Application Received</p>
+          </div>
+          <div style="padding:28px;background:#fff">
+            <table style="width:100%;border-collapse:collapse">
+              <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;width:140px">Full Name</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;font-weight:600">${full_name}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280">Email</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280">Phone</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6">${phone || 'N/A'}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280">Visa Type</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;font-weight:600;color:#c8922a">${visa_type}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280">Nationality</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6">${nationality || 'N/A'}</td></tr>
+              <tr><td style="padding:10px 0;color:#6b7280;vertical-align:top">Message</td><td style="padding:10px 0">${message || 'N/A'}</td></tr>
+            </table>
+            <div style="margin-top:24px;text-align:center">
+              <a href="https://cos-with-visa-pro-uk.vercel.app/admin/applications" style="background:#c8922a;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:700">View in Admin Dashboard</a>
+            </div>
+          </div>
+          <div style="background:#f9fafb;padding:14px;text-align:center;font-size:0.75rem;color:#9ca3af">
+            HC-One Immigration Services Ltd &nbsp;·&nbsp; Received ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })} UK time
+          </div>
+        </div>
+      `,
     })).catch(err => console.error('[Email]', err.message))
     res.status(201).json(rows[0])
   } catch (err) { next(err) }
