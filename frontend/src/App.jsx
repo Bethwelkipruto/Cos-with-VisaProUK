@@ -22,6 +22,7 @@ import AdminSettings from './admin/pages/AdminSettings'
 import AdminLogs from './admin/pages/AdminLogs'
 import AdminIntegrations from './admin/pages/AdminIntegrations'
 import AdminMessages from './admin/pages/AdminMessages'
+import AdminApplications from './admin/pages/AdminApplications'
 import AdminContent from './admin/pages/AdminContent'
 import AdminMedia from './admin/pages/AdminMedia'
 
@@ -50,6 +51,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="messages" element={<AdminMessages />} />
+            <Route path="applications" element={<AdminApplications />} />
             <Route path="content" element={<AdminContent />} />
             <Route path="media" element={<AdminMedia />} />
             <Route path="payments" element={<AdminPayments />} />

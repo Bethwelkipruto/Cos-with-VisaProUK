@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { mockIntegrations } from '../mockData'
+import { INTEGRATIONS } from '../mockData'
 
 export default function AdminIntegrations() {
-  const [integrations, setIntegrations] = useState(mockIntegrations)
+  const [integrations, setIntegrations] = useState(INTEGRATIONS)
 
   function toggle(id) {
     setIntegrations(prev => prev.map(i =>
-      i.id === id
-        ? { ...i, status: i.status === 'Connected' ? 'Disconnected' : 'Connected' }
-        : i
+      i.id === id ? { ...i, status: i.status === 'Connected' ? 'Disconnected' : 'Connected' } : i
     ))
   }
 
@@ -46,7 +44,7 @@ export default function AdminIntegrations() {
                 <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{i.name}</div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--a-muted)' }}>{i.category}</div>
               </div>
-              <span className={`badge badge-${i.status.toLowerCase()}`} style={{ marginLeft: 'auto' }}>
+              <span className={`badge badge-${i.status === 'Connected' ? 'active' : 'suspended'}`} style={{ marginLeft: 'auto' }}>
                 {i.status}
               </span>
             </div>
