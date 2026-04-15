@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { useAuth } from './AuthContext'
+import { CountsProvider } from './CountsContext'
 import AdminSidebar from './components/AdminSidebar'
 import AdminTopbar from './components/AdminTopbar'
 import './admin.css'
@@ -18,6 +19,7 @@ export default function AdminLayout() {
   }
 
   return (
+    <CountsProvider>
     <div className="admin-root">
       <div className="admin-shell">
         {mobileOpen && (
@@ -39,5 +41,6 @@ export default function AdminLayout() {
         </div>
       </div>
     </div>
+    </CountsProvider>
   )
 }

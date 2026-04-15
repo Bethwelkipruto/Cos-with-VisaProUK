@@ -17,11 +17,18 @@ export default function Eligibility() {
     e.preventDefault()
     setStatus('sending')
     try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 30000)
       await api.createApplication(form)
+      clearTimeout(timeout)
       setStatus('success')
       setForm(EMPTY)
     } catch (err) {
-      setErrMsg(err.message)
+      if (err.name === 'AbortError') {
+        setErrMsg('Server is waking up, please try again in a few seconds.')
+      } else {
+        setErrMsg(err.message)
+      }
       setStatus('error')
     }
   }
@@ -88,7 +95,7 @@ export default function Eligibility() {
             </div>
             {status === 'error' && <p style={{ color: '#f87171', fontSize: '0.85rem' }}>{errMsg}</p>}
             <button type="submit" className={styles.btn} disabled={status === 'sending'}>
-              {status === 'sending' ? 'Submitting…' : 'Submit Application — Free →'}
+              {status === 'sending' ? '⏳ Submitting… (may take a few seconds)' : 'Submit Application — Free →'}
             </button>
           </form>
         )}
