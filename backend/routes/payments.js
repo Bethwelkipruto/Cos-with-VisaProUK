@@ -6,6 +6,25 @@ const Stripe = require('stripe')
 
 const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null
 
+// ─── One-time migration endpoint (remove after running) ─────────────────────
+router.get('/run-migration', auth, async (req, res) => {
+  try {
+    await pool.query(`
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS currency VARCHAR(10) DEFAULT 'KES';
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS method VARCHAR(30) DEFAULT 'Manual';
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS phone VARCHAR(30);
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS transaction_id VARCHAR(100);
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS checkout_request_id VARCHAR(100);
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS token VARCHAR(64);
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS client_email VARCHAR(150);
+      ALTER TABLE payments ADD COLUMN IF NOT EXISTS expires_at TIMESTAMP;
+    `)
+    res.json({ message: 'Migration complete' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // ─── M-Pesa helpers ───────────────────────────────────────────────────────────
 
 async function getMpesaToken() {
