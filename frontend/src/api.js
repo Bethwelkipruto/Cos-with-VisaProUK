@@ -38,6 +38,13 @@ export const api = {
   createPayment: (data)     => request('/api/payments', { method: 'POST', body: JSON.stringify(data) }),
   updatePayment: (id, data) => request(`/api/payments/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
 
+  // M-Pesa
+  mpesaStkPush:  (data)     => request('/api/payments/mpesa/stkpush', { method: 'POST', body: JSON.stringify(data) }),
+  mpesaQuery:    (checkoutRequestId) => request('/api/payments/mpesa/query', { method: 'POST', body: JSON.stringify({ checkoutRequestId }) }),
+
+  // Stripe
+  stripeCreateIntent: (data) => request('/api/payments/stripe/create-intent', { method: 'POST', body: JSON.stringify(data) }),
+
   // Contact
   sendContact: (data) => request('/api/contact', { method: 'POST', body: JSON.stringify(data) }),
 

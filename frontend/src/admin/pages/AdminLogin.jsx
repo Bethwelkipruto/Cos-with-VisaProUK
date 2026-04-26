@@ -5,10 +5,10 @@ import { useAuth } from '../AuthContext'
 export default function AdminLogin() {
   const { login } = useAuth()
   const navigate = useNavigate()
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -17,7 +17,7 @@ export default function AdminLogin() {
     setTimeout(() => {
       const ok = login(email, password)
       if (ok) { navigate('/admin') }
-      else    { setError('Invalid email or password.'); setLoading(false) }
+      else { setError('Invalid email or password.'); setLoading(false) }
     }, 600)
   }
 
@@ -60,9 +60,6 @@ export default function AdminLogin() {
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
-        <p style={{ fontSize: '0.72rem', color: 'var(--a-muted)', textAlign: 'center', marginTop: '20px' }}>
-          Demo — admin@hcone.co.uk / admin123
-        </p>
       </div>
     </div>
   )

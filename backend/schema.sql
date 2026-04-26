@@ -26,13 +26,25 @@ CREATE TABLE IF NOT EXISTS applications (
 
 -- Payments / transactions
 CREATE TABLE IF NOT EXISTS payments (
-  id        SERIAL PRIMARY KEY,
-  user_name VARCHAR(100) NOT NULL,
-  service   VARCHAR(150) NOT NULL,
-  amount    NUMERIC(10,2) NOT NULL,
-  status    VARCHAR(30) DEFAULT 'Pending',
-  date      DATE DEFAULT CURRENT_DATE
+  id             SERIAL PRIMARY KEY,
+  user_name      VARCHAR(100) NOT NULL,
+  service        VARCHAR(150) NOT NULL,
+  amount         NUMERIC(10,2) NOT NULL,
+  currency       VARCHAR(10) DEFAULT 'KES',
+  method         VARCHAR(30) DEFAULT 'Manual',
+  phone          VARCHAR(30),
+  transaction_id VARCHAR(100),
+  checkout_request_id VARCHAR(100),
+  status         VARCHAR(30) DEFAULT 'Pending',
+  date           DATE DEFAULT CURRENT_DATE
 );
+
+-- Migration for existing installs
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS currency VARCHAR(10) DEFAULT 'KES';
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS method VARCHAR(30) DEFAULT 'Manual';
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS phone VARCHAR(30);
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS transaction_id VARCHAR(100);
+ALTER TABLE payments ADD COLUMN IF NOT EXISTS checkout_request_id VARCHAR(100);
 
 -- Notifications
 CREATE TABLE IF NOT EXISTS notifications (

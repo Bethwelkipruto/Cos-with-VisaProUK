@@ -2,6 +2,17 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { services } from '../data'
 import styles from './Services.module.css'
+import PaymentModal from '../components/PaymentModal'
+
+// Prices per service (GBP — shown on Pay Now button)
+const servicePrices = {
+  'Certificate of Sponsorship (CoS)':  627,
+  'Skilled Worker Visa Application':   985,
+  'Sponsor Licence Applications':      1500,
+  'Visa Extensions & ILR':             985,
+  'Compliance Audits':                 750,
+  'Global Mobility Consulting':        500,
+}
 
 // Must match the slugs in Navbar servicesMenu
 const serviceSlugs = [
@@ -60,6 +71,7 @@ const serviceDetails = {
 
 export default function Services() {
   const [expanded, setExpanded] = useState(null)
+  const [payment, setPayment] = useState(null) // { service, amount }
   const location = useLocation()
 
   // When the URL hash changes (e.g. /services#cos), scroll to that card and expand it
@@ -85,6 +97,7 @@ export default function Services() {
   }, [location.hash])
 
   const toggle = (title) => setExpanded(prev => prev === title ? null : title)
+  const openPayment = (title) => setPayment({ service: title, amount: servicePrices[title] || 500 })
 
   return (
     <section className={styles.services}>
@@ -136,13 +149,32 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
-                  <Link to="/eligibility" className={styles.expandCta}>Get started →</Link>
+                  <div className={styles.expandActions}>
+                    <Link to="/eligibility" className={styles.expandCta}>Get started →</Link>
+                    <button
+                      className={styles.payBtn}
+                      onClick={() => openPayment(title)}
+                    >
+                      💳 Pay Now — £{servicePrices[title] || 500}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           )
         })}
       </div>
+
+      {payment && (
+        <PaymentModal
+          isOpen={!!payment}
+          onClose={() => setPayment(null)}
+          amount={payment.amount}
+          currency="GBP"
+          service={payment.service}
+          userName="Guest"
+        />
+      )}
     </section>
   )
 }

@@ -29,6 +29,8 @@ app.use(cors({
   credentials: true,
 }))
 
+// Stripe webhook needs raw body — must be registered BEFORE express.json()
+app.use('/api/payments/stripe/webhook', express.raw({ type: 'application/json' }))
 app.use(express.json({ limit: '1mb' }))
 
 // Rate Limiting

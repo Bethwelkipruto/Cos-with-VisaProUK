@@ -185,6 +185,13 @@
   margin-top: 1px;
 }
 
+.expandActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .expandCta {
   display: inline-flex;
   align-items: center;
@@ -195,6 +202,22 @@
   transition: gap 0.2s, color 0.2s;
 }
 .expandCta:hover { gap: 8px; color: var(--white); }
+
+.payBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 1rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #1a1a2e;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.payBtn:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* ── Tablet ── */
 @media (max-width: 1024px) {
