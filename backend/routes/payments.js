@@ -66,6 +66,10 @@ router.post('/mpesa/stkpush', async (req, res) => {
     ? '254' + phone.slice(1)
     : phone.replace('+', '')
 
+  // In sandbox, Safaricom only processes one test number.
+  // We store the real number but send the test number to Daraja.
+  const darajaPhone = process.env.MPESA_ENV === 'sandbox' ? '254708374149' : normalized
+
   try {
     const token = await getMpesaToken()
     const timestamp = mpesaTimestamp()
@@ -84,9 +88,9 @@ router.post('/mpesa/stkpush', async (req, res) => {
         Timestamp: timestamp,
         TransactionType: 'CustomerPayBillOnline',
         Amount: Math.round(amount),
-        PartyA: normalized,
+        PartyA: darajaPhone,
         PartyB: process.env.MPESA_SHORTCODE,
-        PhoneNumber: normalized,
+        PhoneNumber: darajaPhone,
         CallBackURL: process.env.MPESA_CALLBACK_URL,
         AccountReference: 'VisaProUK',
         TransactionDesc: service,
