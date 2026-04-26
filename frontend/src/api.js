@@ -45,6 +45,10 @@ export const api = {
   // Stripe
   stripeCreateIntent: (data) => request('/api/payments/stripe/create-intent', { method: 'POST', body: JSON.stringify(data) }),
 
+  // Payment request (admin → client email)
+  requestPayment:  (data)  => request('/api/payments/request', { method: 'POST', body: JSON.stringify(data) }),
+  getPaymentByToken: (token) => request(`/api/payments/by-token/${token}`),
+
   // Contact
   sendContact: (data) => request('/api/contact', { method: 'POST', body: JSON.stringify(data) }),
 

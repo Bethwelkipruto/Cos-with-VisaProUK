@@ -115,65 +115,75 @@ function MpesaForm({ amount, service, userName, onSuccess, onError }) {
 
 // ─── Main Modal ───────────────────────────────────────────────────────────────
 
-export default function PaymentModal({ isOpen, onClose, amount, currency = 'GBP', service, userName }) {
+export default function PaymentModal({ isOpen, onClose, amount, currency = 'GBP', service, userName, inline = false, onSuccess }) {
   const [tab, setTab] = useState('mpesa')
   const [message, setMessage] = useState(null)
   const [isError, setIsError] = useState(false)
 
   if (!isOpen) return null
 
-  const handleSuccess = (msg) => { setMessage(msg); setIsError(false) }
-  const handleError   = (msg) => { setMessage(msg); setIsError(true) }
+  const handleSuccess = (msg) => {
+    setMessage(msg)
+    setIsError(false)
+    if (onSuccess) onSuccess()
+  }
+  const handleError = (msg) => { setMessage(msg); setIsError(true) }
 
-  return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.close} onClick={onClose}>✕</button>
-        <h2 className={styles.title}>Complete Payment</h2>
-        <p className={styles.sub}>{service}</p>
+  const content = (
+    <div className={inline ? styles.inline : styles.modal} onClick={inline ? undefined : (e) => e.stopPropagation()}>
+      {!inline && <button className={styles.close} onClick={onClose}>✕</button>}
+      {!inline && <h2 className={styles.title}>Complete Payment</h2>}
+      {!inline && <p className={styles.sub}>{service}</p>}
 
-        {message ? (
-          <div className={`${styles.message} ${isError ? styles.error : styles.success}`}>
-            {message}
-            {!isError && <button className={styles.btn} onClick={onClose} style={{ marginTop: '1rem' }}>Done</button>}
-            {isError  && <button className={styles.btnOutline} onClick={() => setMessage(null)}>Try again</button>}
+      {message ? (
+        <div className={`${styles.message} ${isError ? styles.error : styles.success}`}>
+          {message}
+          {!isError && !inline && <button className={styles.btn} onClick={onClose} style={{ marginTop: '1rem' }}>Done</button>}
+          {isError  && <button className={styles.btnOutline} onClick={() => setMessage(null)}>Try again</button>}
+        </div>
+      ) : (
+        <>
+          <div className={styles.tabs}>
+            <button className={`${styles.tab} ${tab === 'mpesa' ? styles.tabActive : ''}`} onClick={() => setTab('mpesa')}>
+              📱 M-Pesa
+            </button>
+            <button className={`${styles.tab} ${tab === 'card' ? styles.tabActive : ''}`} onClick={() => setTab('card')}>
+              💳 Card
+            </button>
           </div>
-        ) : (
-          <>
-            <div className={styles.tabs}>
-              <button className={`${styles.tab} ${tab === 'mpesa' ? styles.tabActive : ''}`} onClick={() => setTab('mpesa')}>
-                📱 M-Pesa
-              </button>
-              <button className={`${styles.tab} ${tab === 'card' ? styles.tabActive : ''}`} onClick={() => setTab('card')}>
-                💳 Card
-              </button>
-            </div>
 
-            {tab === 'mpesa' && (
-              <MpesaForm
+          {tab === 'mpesa' && (
+            <MpesaForm
+              amount={amount}
+              service={service}
+              userName={userName}
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
+          )}
+
+          {tab === 'card' && (
+            <Elements stripe={stripePromise}>
+              <StripeForm
                 amount={amount}
+                currency={currency}
                 service={service}
                 userName={userName}
                 onSuccess={handleSuccess}
                 onError={handleError}
               />
-            )}
+            </Elements>
+          )}
+        </>
+      )}
+    </div>
+  )
 
-            {tab === 'card' && (
-              <Elements stripe={stripePromise}>
-                <StripeForm
-                  amount={amount}
-                  currency={currency}
-                  service={service}
-                  userName={userName}
-                  onSuccess={handleSuccess}
-                  onError={handleError}
-                />
-              </Elements>
-            )}
-          </>
-        )}
-      </div>
+  if (inline) return content
+
+  return (
+    <div className={styles.overlay} onClick={onClose}>
+      {content}
     </div>
   )
 }

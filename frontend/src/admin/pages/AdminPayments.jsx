@@ -8,7 +8,7 @@ export default function AdminPayments() {
   const [loading, setLoading] = useState(true)
   const [error, setError]   = useState('')
 
-  const FILTERS = ['All', 'Paid', 'Pending', 'Failed', 'Refunded']
+  const FILTERS = ['All', 'Completed', 'Pending', 'Failed', 'Refunded']
 
   useEffect(() => { fetchPayments() }, [])
 
@@ -31,7 +31,7 @@ export default function AdminPayments() {
     return matchFilter && matchSearch
   })
 
-  const total   = txns.filter(t => t.status === 'Paid').reduce((s, t) => s + Number(t.amount), 0)
+  const total   = txns.filter(t => t.status === 'Completed').reduce((s, t) => s + Number(t.amount), 0)
   const pending = txns.filter(t => t.status === 'Pending').reduce((s, t) => s + Number(t.amount), 0)
 
   async function refund(id) {
@@ -46,8 +46,8 @@ export default function AdminPayments() {
 
   function exportCSV() {
     const rows = [
-      ['ID', 'User', 'Service', 'Amount', 'Status', 'Date'],
-      ...filtered.map(t => [t.id, t.user_name, t.service, `£${t.amount}`, t.status, t.date]),
+      ['ID', 'Client', 'Email', 'Service', 'Amount', 'Currency', 'Method', 'Status', 'Date'],
+      ...filtered.map(t => [t.id, t.user_name, t.client_email || '', t.service, t.amount, t.currency, t.method, t.status, t.date]),
     ]
     const csv  = rows.map(r => r.join(',')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
@@ -111,19 +111,23 @@ export default function AdminPayments() {
 
         <table className="admin-table">
           <thead>
-            <tr><th>ID</th><th>User</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+            <tr><th>ID</th><th>Client</th><th>Service</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th><th>Actions</th></tr>
           </thead>
           <tbody>
             {filtered.map(t => (
               <tr key={t.id}>
                 <td style={{ fontFamily: 'monospace', color: 'var(--a-muted)', fontSize: '0.78rem' }}>TXN-{t.id}</td>
-                <td style={{ fontWeight: 600 }}>{t.user_name}</td>
+                <td style={{ fontWeight: 600 }}>
+                  {t.user_name}
+                  {t.client_email && <div style={{ fontSize: '0.75rem', color: 'var(--a-muted)' }}>{t.client_email}</div>}
+                </td>
                 <td style={{ color: 'var(--a-muted)' }}>{t.service}</td>
-                <td style={{ fontWeight: 700 }}>£{Number(t.amount).toLocaleString()}</td>
+                <td style={{ fontWeight: 700 }}>{t.currency === 'KES' ? 'KES ' : '£'}{Number(t.amount).toLocaleString()}</td>
+                <td style={{ fontSize: '0.78rem' }}>{t.method || 'Manual'}</td>
                 <td><span className={`badge badge-${t.status.toLowerCase()}`}>{t.status}</span></td>
                 <td style={{ color: 'var(--a-muted)' }}>{t.date?.slice(0, 10)}</td>
                 <td>
-                  {t.status === 'Paid' && <button className="btn-admin btn-admin-danger" onClick={() => refund(t.id)}>Refund</button>}
+                  {t.status === 'Completed' && <button className="btn-admin btn-admin-danger" onClick={() => refund(t.id)}>Refund</button>}
                   {t.status === 'Failed' && <button className="btn-admin btn-admin-ghost">Retry</button>}
                   {(t.status === 'Pending' || t.status === 'Refunded') && <span style={{ color: 'var(--a-muted)', fontSize: '0.78rem' }}>—</span>}
                 </td>

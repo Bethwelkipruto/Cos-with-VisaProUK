@@ -193,6 +193,68 @@ router.post('/stripe/webhook', require('express').raw({ type: 'application/json'
   res.sendStatus(200)
 })
 
+// ─── Payment Request (admin sends link to client) ───────────────────────────
+
+router.post('/request', auth, async (req, res) => {
+  const { client_name, client_email, service, amount, currency } = req.body
+  if (!client_name || !client_email || !service || !amount || !currency)
+    return res.status(400).json({ error: 'client_name, client_email, service, amount and currency required' })
+
+  const crypto = require('crypto')
+  const token = crypto.randomBytes(32).toString('hex')
+  const expires_at = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO payments (user_name, client_email, service, amount, currency, method, status, token, expires_at)
+       VALUES ($1, $2, $3, $4, $5, 'Pending', 'Pending', $6, $7) RETURNING *`,
+      [client_name, client_email, service, amount, currency, token, expires_at]
+    )
+
+    const payLink = `${process.env.CLIENT_URL}/pay/${token}`
+    const currencySymbol = currency === 'KES' ? 'KES' : '£'
+
+    await require('../mailer').sendMail({
+      from: `"VisaProUK" <${process.env.MAIL_USER}>`,
+      to: client_email,
+      subject: `Payment Request — ${service}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px;background:#f9fafb;border-radius:12px">
+          <h2 style="color:#1a1a2e;margin-bottom:8px">Payment Request</h2>
+          <p style="color:#555">Dear ${client_name},</p>
+          <p style="color:#555">Your case manager has sent you a payment request for the following service:</p>
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:20px 0">
+            <p style="margin:0 0 8px"><strong>Service:</strong> ${service}</p>
+            <p style="margin:0"><strong>Amount:</strong> ${currencySymbol}${Number(amount).toLocaleString()}</p>
+          </div>
+          <a href="${payLink}" style="display:inline-block;background:#c8922a;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem">Pay Now</a>
+          <p style="color:#9ca3af;font-size:0.8rem;margin-top:24px">This link expires in 7 days. If you have questions, reply to this email.</p>
+        </div>
+      `,
+    })
+
+    res.status(201).json({ message: 'Payment request sent', payment: rows[0] })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// ─── Get payment by token (public — for client pay page) ─────────────────────
+
+router.get('/by-token/:token', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM payments WHERE token=$1',
+      [req.params.token]
+    )
+    if (!rows[0]) return res.status(404).json({ error: 'Payment link not found or expired' })
+    if (new Date(rows[0].expires_at) < new Date()) return res.status(410).json({ error: 'Payment link has expired' })
+    res.json(rows[0])
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // ─── Admin CRUD (existing) ────────────────────────────────────────────────────
 
 router.get('/', auth, async (req, res) => {

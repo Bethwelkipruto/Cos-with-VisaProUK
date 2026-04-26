@@ -10,6 +10,7 @@ import Documents from './pages/Documents'
 import FAQ from './pages/FAQ'
 import Testimonials from './pages/Testimonials'
 import Contact from './pages/Contact'
+import PayPage from './pages/PayPage'
 import AdminLayout from './admin/AdminLayout'
 import AdminLogin from './admin/pages/AdminLogin'
 import AdminDashboard from './admin/pages/AdminDashboard'
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="faq" element={<FAQ />} />
             <Route path="testimonials" element={<Testimonials />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="pay/:token" element={<PayPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
 

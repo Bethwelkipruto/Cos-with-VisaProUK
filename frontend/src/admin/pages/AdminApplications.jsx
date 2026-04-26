@@ -3,12 +3,50 @@ import { api } from '../../api'
 
 const STATUSES = ['All', 'Pending', 'In Review', 'Approved', 'Rejected']
 
+const SERVICE_FEES = {
+  'Skilled Worker Visa':             { amount: 600,  currency: 'GBP' },
+  'Health & Care Worker Visa':       { amount: 600,  currency: 'GBP' },
+  'Senior / Specialist Worker Visa': { amount: 600,  currency: 'GBP' },
+  'Graduate Trainee Visa':           { amount: 500,  currency: 'GBP' },
+  'Scale-Up Worker Visa':            { amount: 500,  currency: 'GBP' },
+  'Sponsor Licence Application':     { amount: 1200, currency: 'GBP' },
+  'Visa Extension / ILR':            { amount: 550,  currency: 'GBP' },
+}
+
 export default function AdminApplications() {
   const [applications, setApplications] = useState([])
   const [selected, setSelected]         = useState(null)
   const [filter, setFilter]             = useState('All')
   const [search, setSearch]             = useState('')
   const [loading, setLoading]           = useState(true)
+  const [payReq, setPayReq]             = useState(null)
+  const [sending, setSending]           = useState(false)
+  const [payMsg, setPayMsg]             = useState('')
+
+  function openPayReq(application) {
+    const defaults = SERVICE_FEES[application.visa_type] || { amount: 500, currency: 'GBP' }
+    setPayReq({ ...defaults, service: application.visa_type })
+    setPayMsg('')
+  }
+
+  async function submitPaymentRequest(application) {
+    setSending(true)
+    try {
+      await api.requestPayment({
+        client_name:  application.full_name,
+        client_email: application.email,
+        service:      payReq.service,
+        amount:       payReq.amount,
+        currency:     payReq.currency,
+      })
+      setPayMsg('success')
+      setPayReq(null)
+    } catch (err) {
+      setPayMsg(err.message)
+    } finally {
+      setSending(false)
+    }
+  }
 
   useEffect(() => {
     api.getApplications()
@@ -132,6 +170,51 @@ export default function AdminApplications() {
                   <div style={{ fontSize: '0.88rem' }}>{value}</div>
                 </div>
               ))}
+
+              {/* Payment request */}
+              <div style={{ borderTop: '1px solid var(--a-border)', paddingTop: '16px' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--a-muted)', marginBottom: '8px' }}>REQUEST PAYMENT</div>
+                {payMsg === 'success' ? (
+                  <p style={{ color: '#4ade80', fontSize: '0.85rem' }}>✅ Payment link sent to {selected.email}</p>
+                ) : payReq ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <input
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--a-border)', background: 'var(--a-bg2)', color: 'var(--a-text)', fontSize: '0.85rem' }}
+                      value={payReq.service}
+                      onChange={e => setPayReq(p => ({ ...p, service: e.target.value }))}
+                      placeholder="Service name"
+                    />
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <input
+                        type="number"
+                        style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--a-border)', background: 'var(--a-bg2)', color: 'var(--a-text)', fontSize: '0.85rem' }}
+                        value={payReq.amount}
+                        onChange={e => setPayReq(p => ({ ...p, amount: e.target.value }))}
+                        placeholder="Amount"
+                      />
+                      <select
+                        style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--a-border)', background: 'var(--a-bg2)', color: 'var(--a-text)', fontSize: '0.85rem' }}
+                        value={payReq.currency}
+                        onChange={e => setPayReq(p => ({ ...p, currency: e.target.value }))}
+                      >
+                        <option value="GBP">GBP £</option>
+                        <option value="KES">KES</option>
+                      </select>
+                    </div>
+                    {payMsg && <p style={{ color: '#f87171', fontSize: '0.8rem' }}>{payMsg}</p>}
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button className="btn-admin btn-admin-gold" style={{ flex: 1 }} disabled={sending} onClick={() => submitPaymentRequest(selected)}>
+                        {sending ? 'Sending…' : '📧 Send Payment Link'}
+                      </button>
+                      <button className="btn-admin btn-admin-ghost" onClick={() => { setPayReq(null); setPayMsg('') }}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="btn-admin btn-admin-gold" onClick={() => openPayReq(selected)}>
+                    💳 Request Payment
+                  </button>
+                )}
+              </div>
 
               {/* Status update */}
               <div>
