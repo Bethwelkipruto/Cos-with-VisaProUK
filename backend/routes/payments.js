@@ -4,7 +4,7 @@ const auth = require('../middleware/auth')
 const axios = require('axios')
 const Stripe = require('stripe')
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null
 
 // ─── M-Pesa helpers ───────────────────────────────────────────────────────────
 
@@ -141,6 +141,7 @@ router.post('/mpesa/query', async (req, res) => {
 // ─── Stripe Payment Intent ────────────────────────────────────────────────────
 
 router.post('/stripe/create-intent', async (req, res) => {
+  if (!stripe) return res.status(503).json({ error: 'Stripe is not configured on this server' })
   const { amount, currency, service, user_name } = req.body
   if (!amount || !currency || !service || !user_name)
     return res.status(400).json({ error: 'amount, currency, service and user_name required' })
@@ -168,6 +169,7 @@ router.post('/stripe/create-intent', async (req, res) => {
 // ─── Stripe Webhook (mark payment complete) ───────────────────────────────────
 
 router.post('/stripe/webhook', require('express').raw({ type: 'application/json' }), async (req, res) => {
+  if (!stripe) return res.sendStatus(200)
   const sig = req.headers['stripe-signature']
   let event
   try {
